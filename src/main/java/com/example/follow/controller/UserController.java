@@ -1,11 +1,12 @@
 package com.example.follow.controller;
 
-import com.example.follow.model.User;
+import com.example.follow.model.user.User;
 import com.example.follow.model.response.ResponseResult;
-import com.example.follow.model.response.ResultCode;
 import com.example.follow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 /**
  * @author LYF
@@ -13,19 +14,17 @@ import org.springframework.web.bind.annotation.*;
  * @date 2023/7/2
  **/
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api")
 @ResponseResult
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private SecurityUser securityUser;
 
-    @GetMapping("/test")
-    public String test() {
-        return ResultCode.SUCCESS.getMessage();
-    }
 
     @PostMapping("/login")
-    public User login(@RequestBody User user) {
+    public HashMap<String, Object> login(@RequestBody User user) {
         return userService.login(user);
     }
 
@@ -37,6 +36,11 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User user) {
         return userService.updateUser(id, user);
+    }
+
+    @PostMapping("/userInfo")
+    public User getUser() {
+        return securityUser.getLoginUser();
     }
 
 

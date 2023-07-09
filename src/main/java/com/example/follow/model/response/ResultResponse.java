@@ -43,7 +43,11 @@ public class ResultResponse {
     public static Result failure(ResultCode resultCode, Object data) {
         return new Result()
                 .setResult(resultCode, data);
+    }
 
+    public static Result failure(ResultCode resultCode, String data) {
+        return new Result()
+                .setResult(resultCode, data);
     }
 
 

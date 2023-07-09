@@ -32,6 +32,16 @@ public class Result<T> implements Serializable {
 
     }
 
+    public Result setResult(ResultCode resultCode,String msg) {
+
+        this.code = resultCode.getCode();
+
+        this.message = msg;
+
+        return this;
+
+    }
+
 
     public Result setResult(ResultCode resultCode, T data) {
 

@@ -1,6 +1,8 @@
 package com.example.follow.service;
 
-import com.example.follow.model.User;
+import com.example.follow.model.user.User;
+
+import java.util.HashMap;
 
 /**
  * @author LYF
@@ -10,7 +12,7 @@ import com.example.follow.model.User;
 public interface UserService {
     User findUserByPhone(String phone);
 
-    User login(User user);
+    HashMap<String, Object> login(User user);
 
 
     User createUser(User user);

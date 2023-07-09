@@ -1,10 +1,15 @@
 package com.example.follow.service;
 
 import com.example.follow.except.BusinessException;
-import com.example.follow.model.User;
+import com.example.follow.model.user.User;
+import com.example.follow.model.user.UserRoles;
 import com.example.follow.repository.UserRepository;
+import com.example.follow.utils.Constants;
+import com.example.follow.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 
 
 /**
@@ -23,26 +28,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(User user) {
+    public HashMap<String, Object> login(User user) {
         User findUser = userRepository.findUserByPhoneAndPassword(user.getPhone(), user.getPassword());
         if (findUser == null) {
             throw new BusinessException("用户不存在");
         }
-        return findUser;
+        String jwt = JwtUtil.createJWT(findUser.getPhone());
+        System.out.println(jwt);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("phone",findUser.getPhone());
+        map.put("username",findUser.getUsername());
+        map.put("email",findUser.getEmail());
+        map.put(Constants.HEADER_STRING,jwt);
+        return map;
     }
 
     @Override
     public User createUser(User user) {
-        try {
-            User userByPhone = findUserByPhone(user.getPhone());
-            if (userByPhone != null) {
-                throw new BusinessException("用户已存在");
-            }
-            return userRepository.save(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BusinessException("注册失败");
+        User userByPhone = findUserByPhone(user.getPhone());
+        if (userByPhone != null) {
+            throw new BusinessException("用户已存在");
         }
+        user.setRoles(UserRoles.USER);
+        return userRepository.save(user);
+
     }
 
     public User updateUser(Long id, User user) {

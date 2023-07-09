@@ -32,6 +32,8 @@ public enum ResultCode {
 
     PARAMS_IS_BLANK(1002, "参数为空");
 
+
+
     /*用户错误2001-2999*/
 
 

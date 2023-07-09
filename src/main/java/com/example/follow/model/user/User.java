@@ -1,4 +1,4 @@
-package com.example.follow.model;
+package com.example.follow.model.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,11 +22,15 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private String roles;
 
     private String email;
     @Column(name = "createTime", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createTime;
+
+
 
 
 }

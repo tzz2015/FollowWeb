@@ -1,6 +1,6 @@
 package com.example.follow;
 
-import com.example.follow.model.User;
+import com.example.follow.model.user.User;
 import com.example.follow.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
