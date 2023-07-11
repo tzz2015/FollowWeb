@@ -21,12 +21,12 @@ public class SecurityUser{
     @Autowired
     private UserService userService;
 
-    public String getLoginPhone() {
+    public Long getLoginId() {
         Object phone = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (ObjectUtils.isEmpty(phone)){
             throw new RuntimeException("获取登录人失败");
         }
-        return String.valueOf(phone);
+        return Long.valueOf((String) phone);
     }
 
     /**
@@ -35,6 +35,6 @@ public class SecurityUser{
      * @return
      */
     public User getLoginUser() {
-        return userService.findUserByPhone(getLoginPhone());
+        return userService.findUserById(getLoginId());
     }
 }

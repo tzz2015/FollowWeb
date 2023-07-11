@@ -28,6 +28,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserById(long userId) {
+        return userRepository.findUserById(userId);
+    }
+
+    @Override
     public HashMap<String, Object> login(User user) {
         User findUser = userRepository.findUserByPhoneAndPassword(user.getPhone(), user.getPassword());
         if (findUser == null) {
