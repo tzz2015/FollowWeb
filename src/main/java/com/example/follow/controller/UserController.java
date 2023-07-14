@@ -2,6 +2,7 @@ package com.example.follow.controller;
 
 import com.example.follow.model.response.ResponseResult;
 import com.example.follow.model.user.User;
+import com.example.follow.service.SecurityUser;
 import com.example.follow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

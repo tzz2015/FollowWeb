@@ -1,7 +1,6 @@
-package com.example.follow.controller;
+package com.example.follow.service;
 
 import com.example.follow.model.user.User;
-import com.example.follow.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

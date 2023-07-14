@@ -22,10 +22,9 @@ public interface UserFollowService {
     /**
      * 查找用户所有关注账户
      *
-     * @param userId
      * @return
      */
-    List<UserFollow> findAll(long userId);
+    List<UserFollow> findAll();
 
     /**
      * 校准关注和被关注的数量
