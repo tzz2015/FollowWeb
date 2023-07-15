@@ -1,6 +1,6 @@
 package com.example.follow.service;
 
-import com.example.follow.model.UserFollow;
+import com.example.follow.model.FollowAccount;
 
 import java.util.List;
 
@@ -17,27 +17,27 @@ public interface UserFollowService {
      * @param account
      * @return
      */
-    UserFollow createOrSave(int type, String account);
+    FollowAccount createOrSave(int type, String account);
 
     /**
      * 查找用户所有关注账户
      *
      * @return
      */
-    List<UserFollow> findAll();
+    List<FollowAccount> findAll();
 
     /**
      * 校准关注和被关注的数量
      *
-     * @param userFollow
+     * @param followAccount
      * @return
      */
-    UserFollow saveByCount(UserFollow userFollow);
+    FollowAccount saveByCount(FollowAccount followAccount);
 
     /**
      * 根据类型查找
      * @param type
      * @return
      */
-    UserFollow findByType(int type);
+    FollowAccount findByType(int type);
 }

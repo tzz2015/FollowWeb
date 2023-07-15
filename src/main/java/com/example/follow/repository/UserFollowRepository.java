@@ -1,6 +1,6 @@
 package com.example.follow.repository;
 
-import com.example.follow.model.UserFollow;
+import com.example.follow.model.FollowAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +12,9 @@ import java.util.List;
  * @date 2023/7/13
  **/
 @Repository
-public interface UserFollowRepository extends JpaRepository<UserFollow, Long> {
+public interface UserFollowRepository extends JpaRepository<FollowAccount, Long> {
 
-    UserFollow findByFollowTypeAndUserId(int type, long userId);
+    FollowAccount findByFollowTypeAndUserId(int type, long userId);
 
-    List<UserFollow> findAllByUserId(long userId);
+    List<FollowAccount> findAllByUserId(long userId);
 }

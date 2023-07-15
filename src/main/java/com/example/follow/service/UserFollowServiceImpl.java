@@ -1,7 +1,7 @@
 package com.example.follow.service;
 
 import com.example.follow.except.BusinessException;
-import com.example.follow.model.UserFollow;
+import com.example.follow.model.FollowAccount;
 import com.example.follow.model.response.ResultCode;
 import com.example.follow.repository.UserFollowRepository;
 import com.example.follow.utils.TextUtil;
@@ -23,41 +23,41 @@ public class UserFollowServiceImpl implements UserFollowService {
     private SecurityUser securityUser;
 
     @Override
-    public UserFollow createOrSave(int type, String account) {
+    public FollowAccount createOrSave(int type, String account) {
         if (TextUtil.isEmpty(account)) {
             throw new BusinessException("账户不能为空");
         }
-        UserFollow userFollow = findByType(type);
-        if (userFollow != null) {
-            userFollow.setAccount(account);
+        FollowAccount followAccount = findByType(type);
+        if (followAccount != null) {
+            followAccount.setAccount(account);
         } else {
-            userFollow = new UserFollow();
-            userFollow.setUserId(securityUser.getLoginId());
-            userFollow.setFollowType(type);
-            userFollow.setAccount(account);
+            followAccount = new FollowAccount();
+            followAccount.setUserId(securityUser.getLoginId());
+            followAccount.setFollowType(type);
+            followAccount.setAccount(account);
         }
-        return userFollowRepository.save(userFollow);
+        return userFollowRepository.save(followAccount);
     }
 
     @Override
-    public List<UserFollow> findAll() {
+    public List<FollowAccount> findAll() {
         return userFollowRepository.findAllByUserId(securityUser.getLoginId());
     }
 
     @Override
-    public UserFollow saveByCount(UserFollow userFollow) {
-        UserFollow follow = findByType(userFollow.getFollowType());
+    public FollowAccount saveByCount(FollowAccount followAccount) {
+        FollowAccount follow = findByType(followAccount.getFollowType());
         if (follow == null) {
             throw new BusinessException(ResultCode.BAD_REQUEST, "不允许修改");
         }
-        follow.setFollowCount(userFollow.getFollowCount());
-        follow.setNeedFollowedCount(userFollow.getNeedFollowedCount());
-        follow.setFollowedCount(userFollow.getFollowedCount());
+        follow.setFollowCount(followAccount.getFollowCount());
+        follow.setNeedFollowedCount(followAccount.getNeedFollowedCount());
+        follow.setFollowedCount(followAccount.getFollowedCount());
         return userFollowRepository.save(follow);
     }
 
     @Override
-    public UserFollow findByType(int type) {
+    public FollowAccount findByType(int type) {
         return userFollowRepository.findByFollowTypeAndUserId(type, securityUser.getLoginId());
     }
 }

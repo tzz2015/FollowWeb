@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Entity
-@Table(name = "user_follow")
-public class UserFollow {
+@Table(name = "follow_account")
+public class FollowAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
