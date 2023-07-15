@@ -15,17 +15,17 @@ import org.springframework.util.ObjectUtils;
 
 @Slf4j
 @Service
-public class SecurityUser{
+public class SecurityUser {
 
     @Autowired
     private UserService userService;
 
     public Long getLoginId() {
-        Object phone = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (ObjectUtils.isEmpty(phone)){
+        Object userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (ObjectUtils.isEmpty(userId)) {
             throw new RuntimeException("获取登录人失败");
         }
-        return Long.valueOf((String) phone);
+        return (Long) userId;
     }
 
     /**

@@ -4,6 +4,7 @@ import com.example.follow.except.BusinessException;
 import com.example.follow.model.UserFollow;
 import com.example.follow.model.response.ResultCode;
 import com.example.follow.repository.UserFollowRepository;
+import com.example.follow.utils.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class UserFollowServiceImpl implements UserFollowService {
 
     @Override
     public UserFollow createOrSave(int type, String account) {
+        if (TextUtil.isEmpty(account)) {
+            throw new BusinessException("账户不能为空");
+        }
         UserFollow userFollow = findByType(type);
         if (userFollow != null) {
             userFollow.setAccount(account);

@@ -44,6 +44,12 @@ public class UserController {
         return securityUser.getLoginUser();
     }
 
+    @PostMapping("/logout")
+    public String logout() {
+        userService.logout();
+        return "退出登录成功";
+    }
+
 
 }
 
