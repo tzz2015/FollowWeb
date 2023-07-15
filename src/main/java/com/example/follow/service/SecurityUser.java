@@ -20,7 +20,7 @@ public class SecurityUser {
     @Autowired
     private UserService userService;
 
-    public Long getLoginId() {
+    public Long getUserId() {
         Object userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (ObjectUtils.isEmpty(userId)) {
             throw new RuntimeException("获取登录人失败");
@@ -34,6 +34,6 @@ public class SecurityUser {
      * @return
      */
     public User getLoginUser() {
-        return userService.findUserById(getLoginId());
+        return userService.findUserById(getUserId());
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2023/7/13
  **/
 @Repository
-public interface UserFollowRepository extends JpaRepository<FollowAccount, Long> {
+public interface FollowAccountRepository extends JpaRepository<FollowAccount, Long> {
 
     FollowAccount findByFollowTypeAndUserId(int type, long userId);
 

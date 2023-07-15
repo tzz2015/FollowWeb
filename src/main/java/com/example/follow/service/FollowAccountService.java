@@ -9,7 +9,7 @@ import java.util.List;
  * @dec:
  * @date 2023/7/13
  **/
-public interface UserFollowService {
+public interface FollowAccountService {
     /**
      * 添加或者修改关注的账户
      *
@@ -39,5 +39,5 @@ public interface UserFollowService {
      * @param type
      * @return
      */
-    FollowAccount findByType(int type);
+    FollowAccount findByType(int type,long userId);
 }

@@ -29,7 +29,7 @@ public class Follow {
 
     private long followUserId;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private String followAccount;
 
     @Column(name = "createTime", nullable = false, updatable = false)

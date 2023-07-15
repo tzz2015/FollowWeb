@@ -1,0 +1,127 @@
+package com.example.follow.service;
+
+import com.example.follow.except.BusinessException;
+import com.example.follow.model.Follow;
+import com.example.follow.model.FollowAccount;
+import com.example.follow.repository.FollowRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+/**
+ * @author LYF
+ * @dec:
+ * @date 2023/7/15
+ **/
+@Service
+public class FollowServiceImpl implements FollowService {
+    @Autowired
+    private FollowRepository followRepository;
+    @Autowired
+    private SecurityUser securityUser;
+    @Autowired
+    private FollowAccountService followAccountService;
+
+    /**
+     * 添加记录
+     *
+     * @param follow
+     * @return
+     */
+    @Transactional
+    @Override
+    public Follow addFollow(Follow follow) {
+        follow.setUserId(securityUser.getUserId());
+        Follow findFollow = find(follow);
+        if (findFollow != null) {
+            throw new BusinessException("已经关注");
+        }
+        try {
+            Follow save = followRepository.save(follow);
+            updateUserFollowCount(follow.getFollowType());
+            updateFollowedCount(follow.getFollowType(), follow.getFollowUserId());
+            return save;
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+
+    }
+
+    /**
+     * 查询记录
+     *
+     * @param follow
+     * @return
+     */
+    @Override
+    public Follow find(Follow follow) {
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                // 字符串匹配方式
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+                // 忽略大小写
+                .withIgnoreCase()
+                .withIncludeNullValues();
+        Example<Follow> example = Example.of(follow, matcher);
+        List<Follow> list = followRepository.findAll(example);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    /**
+     * 更新当前用的follow count
+     * 每关注一个 FollowAccount needFollowedCount+1 followCount+1
+     */
+    @Override
+    public void updateUserFollowCount(int followType) {
+        FollowAccount followAccount = followAccountService.findByType(followType, securityUser.getUserId());
+        if (followAccount == null) {
+            throw new RuntimeException("当前FollowCount不存在");
+        }
+        int followCount = followAccount.getFollowCount() + 1;
+        int needFollowedCount = followAccount.getNeedFollowedCount() + 1;
+        followAccount.setNeedFollowedCount(needFollowedCount);
+        followAccount.setFollowCount(followCount);
+        followAccountService.saveByCount(followAccount);
+    }
+
+    /**
+     * 更新被关注的用户的 count
+     * 每关注一个 FollowAccount needFollowedCount-1 followedCount+1
+     */
+    @Override
+    public void updateFollowedCount(int followType, long followedUserId) {
+        FollowAccount followAccount = followAccountService.findByType(followType, followedUserId);
+        if (followAccount == null) {
+            throw new RuntimeException("当前FollowCount不存在");
+        }
+        int followedCount = followAccount.getFollowedCount() + 1;
+        int needFollowedCount = followAccount.getNeedFollowedCount() - 1;
+        followAccount.setFollowedCount(followedCount);
+        followAccount.setNeedFollowedCount(needFollowedCount);
+        followAccountService.saveByCount(followAccount);
+    }
+
+    /**
+     * 校准当前用户的 count
+     * <p>
+     * 如果 needFollowedCount ==0 并且 followCount > followedCount  needFollowedCount+=followCount - followedCount
+     */
+    @Override
+    public void calibrateFollowCount(int followType) {
+        FollowAccount followAccount = followAccountService.findByType(followType, securityUser.getUserId());
+        if (followAccount != null) {
+            int needFollowedCount = followAccount.getNeedFollowedCount();
+            int followCount = followAccount.getFollowCount();
+            int followedCount = followAccount.getFollowedCount();
+            if (needFollowedCount == 0 && followCount > followedCount) {
+                needFollowedCount = followCount - followedCount;
+                followAccount.setNeedFollowedCount(needFollowedCount);
+                followAccountService.saveByCount(followAccount);
+            }
+        }
+
+    }
+}

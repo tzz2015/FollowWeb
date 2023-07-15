@@ -2,7 +2,7 @@ package com.example.follow.controller;
 
 import com.example.follow.model.FollowAccount;
 import com.example.follow.model.response.ResponseResult;
-import com.example.follow.service.UserFollowService;
+import com.example.follow.service.FollowAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,18 +17,18 @@ import java.util.List;
  * @date 2023/7/14
  **/
 @RestController
-@RequestMapping("/api/userFollow")
+@RequestMapping("/api/followAccount")
 @ResponseResult
-public class UserFollowController {
+public class FollowAccountController {
     @Autowired
-    private UserFollowService userFollowService;
+    private FollowAccountService followAccountService;
 
     @PostMapping("/updateAccount")
     public FollowAccount update(@RequestBody FollowAccount follow) {
-        return userFollowService.createOrSave(follow.getFollowType(), follow.getAccount());
+        return followAccountService.createOrSave(follow.getFollowType(), follow.getAccount());
     }
     @PostMapping("/list")
     public List<FollowAccount> findAll(){
-        return userFollowService.findAll();
+        return followAccountService.findAll();
     }
 }
