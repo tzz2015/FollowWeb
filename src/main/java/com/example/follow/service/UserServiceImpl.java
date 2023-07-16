@@ -7,6 +7,7 @@ import com.example.follow.model.user.User;
 import com.example.follow.model.user.UserRoles;
 import com.example.follow.repository.UserRepository;
 import com.example.follow.utils.Constants;
+import com.example.follow.utils.FormatUtil;
 import com.example.follow.utils.JwtUtil;
 import com.example.follow.utils.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class UserServiceImpl implements UserService {
     private SecurityConfig securityConfig;
     @Autowired
     private FollowService followService;
+    @Autowired
+    private SecurityUser securityUser;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public User findUserByPhone(String phone) {
@@ -66,6 +71,16 @@ public class UserServiceImpl implements UserService {
         if (TextUtil.isEmpty(user.getPhone()) || TextUtil.isEmpty(user.getPassword())) {
             throw new BusinessException("用户名或者密码为空");
         }
+        if (!FormatUtil.isMobile(user.getPhone())) {
+            throw new BusinessException("手机号码格式不正确");
+        }
+        if (!FormatUtil.isPassword(user.getPassword())) {
+            throw new BusinessException("请输入6-20位由字母和数字组成的密码");
+        }
+
+        if (TextUtil.isEmpty(user.getEmail()) || !FormatUtil.isEmail(user.getEmail())) {
+            throw new BusinessException("邮箱格式不正确");
+        }
         User userByPhone = findUserByPhone(user.getPhone());
         if (userByPhone != null) {
             throw new BusinessException("用户已存在");
@@ -77,12 +92,28 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public User updateUser(Long id, User user) {
-        if (userRepository.existsById(id)) {
-            user.setId(id);
-            return userRepository.save(user);
+    public User updateUser(User user) {
+        User loginUser = securityUser.getLoginUser();
+        if (loginUser != null) {
+            if (TextUtil.isNotEmpty(user.getPhone())) {
+                if (!FormatUtil.isMobile(user.getPhone())) {
+                    throw new BusinessException("手机号码格式不正确");
+                }
+                loginUser.setPhone(user.getPhone());
+            }
+            if (TextUtil.isNotEmpty(user.getEmail()) && FormatUtil.isEmail(user.getEmail())) {
+                loginUser.setEmail(user.getEmail());
+            }
+            if (TextUtil.isNotEmpty(user.getPassword())) {
+                if (!FormatUtil.isPassword(user.getPassword())) {
+                    throw new BusinessException("请输入6-20位由字母和数字组成的密码");
+                }
+                String encodePsw = securityConfig.passwordEncoder().encode(user.getPassword());
+                loginUser.setPassword(encodePsw);
+            }
+            return userRepository.save(loginUser);
         } else {
-            return null;
+            throw new BusinessException("用户不存在");
         }
     }
 
@@ -95,6 +126,41 @@ public class UserServiceImpl implements UserService {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
         // 执行其他清除操作，例如使会话失效、清除相关的缓存等
+    }
+
+    @Override
+    public void sendCode(String phone, String email) {
+        if (!FormatUtil.isEmail(email)) {
+            throw new BusinessException("邮箱格式不正确");
+        }
+        User user = userRepository.findByPhoneAndEmail(phone, email);
+        if (user == null) {
+            throw new BusinessException("手机号码绑定的邮箱不正确");
+        }
+        emailService.clearVerificationCode(user.getEmail());
+        emailService.sendVerificationCode(email);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param code
+     * @param user
+     */
+    @Override
+    public User changePsw(String code, User user) {
+        if (TextUtil.isEmpty(code)) {
+            throw new BusinessException("验证码不能为空");
+        }
+        if (!FormatUtil.isEmail(user.getEmail())) {
+            throw new BusinessException("邮箱错误");
+        }
+        if (emailService.verifyVerificationCode(user.getEmail(), code)) {
+            emailService.clearVerificationCode(user.getEmail());
+            return updateUser(user);
+        } else {
+            throw new BusinessException("验证码错误");
+        }
     }
 
 

@@ -19,7 +19,17 @@ public interface UserService {
 
     User createUser(User user);
 
-    User updateUser(Long id, User user);
+    User updateUser(User user);
 
     void logout();
+
+    void sendCode(String email, String phone);
+
+    /**
+     * 修改密码
+     *
+     * @param code
+     * @param user
+     */
+    User changePsw(String code, User user);
 }

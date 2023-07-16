@@ -1,8 +1,8 @@
 package com.example.follow.controller;
 
 import com.example.follow.model.response.ResponseResult;
+import com.example.follow.model.response.ResultCode;
 import com.example.follow.model.user.User;
-import com.example.follow.service.FollowService;
 import com.example.follow.service.SecurityUser;
 import com.example.follow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,6 @@ public class UserController {
     private SecurityUser securityUser;
 
 
-
     @PostMapping("/login")
     public HashMap<String, Object> login(@RequestBody User user) {
         return userService.login(user);
@@ -36,9 +35,20 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    @PostMapping("/updateUser")
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
+    }
+
+    @PostMapping("/sendCode")
+    public String sandCode(@RequestBody User user) {
+        userService.sendCode(user.getPhone(), user.getEmail());
+        return ResultCode.SUCCESS.getMessage();
+    }
+
+    @PostMapping("/changePsw/{code}")
+    public User changePsw(@PathVariable("code") String code, @RequestBody User user) {
+        return userService.changePsw(code, user);
     }
 
     @PostMapping("/userInfo")

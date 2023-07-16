@@ -55,16 +55,16 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         token = token.substring(7);
 
-        String userid;
+        String userPhone;
         try {
             Claims claims = JwtUtil.parseJWT(token);
-            userid = claims.getSubject();
+            userPhone = claims.getSubject();
         } catch (Exception e) {
             error(response);
             return;
         }
 
-        User user = userService.findUserByPhone(userid);
+        User user = userService.findUserByPhone(userPhone);
 
         if (user == null) {
             error(response);

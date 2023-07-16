@@ -33,6 +33,8 @@ public class NoneAuthedResources {
             // 登录相关接口放开过滤
             "/api/login",
             "/api/create",
+            "/api/sendCode",
+            "/api/changePsw",
             "/api/suggestion/add",
             "/api/follow/count",
             "/api/spread/list",
