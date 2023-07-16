@@ -38,4 +38,11 @@ public interface FollowService {
      * 校准当前用户的 count
      */
     void calibrateFollowCount(int followType);
+
+    /**
+     * 累计关注
+     *
+     * @return
+     */
+    long totalCount();
 }

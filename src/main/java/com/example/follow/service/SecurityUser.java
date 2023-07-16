@@ -1,5 +1,7 @@
 package com.example.follow.service;
 
+import com.example.follow.except.BusinessException;
+import com.example.follow.model.response.ResultCode;
 import com.example.follow.model.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class SecurityUser {
     public Long getUserId() {
         Object userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (ObjectUtils.isEmpty(userId)) {
-            throw new RuntimeException("获取登录人失败");
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
         }
         return (Long) userId;
     }
@@ -34,6 +36,9 @@ public class SecurityUser {
      * @return
      */
     public User getLoginUser() {
+        if (getUserId() < 0) {
+            return null;
+        }
         return userService.findUserById(getUserId());
     }
 }

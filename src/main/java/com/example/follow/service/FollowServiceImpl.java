@@ -124,4 +124,14 @@ public class FollowServiceImpl implements FollowService {
         }
 
     }
+
+    /**
+     * 累计关注
+     *
+     * @return
+     */
+    @Override
+    public long totalCount() {
+        return followAccountService.findAll().size();
+    }
 }

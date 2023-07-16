@@ -4,29 +4,23 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 /**
  * @author LYF
- * @dec: 关注表
- * @date 2023/7/12
+ * @dec: 公告
+ * @date 2023/7/16
  **/
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = "suggestion")
-public class Suggestion {
+@Table(name = "Announcement")
+public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(nullable = false, unique = true)
+    private String title;
     @Column(nullable = false, unique = true)
     private String content;
-
-    @Column(name = "createTime", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createTime;
 }

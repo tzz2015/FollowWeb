@@ -4,10 +4,7 @@ import com.example.follow.model.Follow;
 import com.example.follow.model.response.ResponseResult;
 import com.example.follow.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author LYF
@@ -25,5 +22,10 @@ public class FollowController {
     @PostMapping("/add")
     public Follow update(@RequestBody Follow follow) {
         return followService.addFollow(follow);
+    }
+
+    @GetMapping("/count")
+    public long totalCount() {
+        return followService.totalCount();
     }
 }

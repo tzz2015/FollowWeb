@@ -33,6 +33,10 @@ public class NoneAuthedResources {
             // 登录相关接口放开过滤
             "/api/login",
             "/api/create",
+            "/api/suggestion/add",
+            "/api/follow/count",
+            "/api/spread/list",
+            "/api/announcement/list",
             // Swagger及druid相关资源
             "/swagger**/**",
             "/webjars/**",
