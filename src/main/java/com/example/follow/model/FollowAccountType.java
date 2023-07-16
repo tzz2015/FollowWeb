@@ -10,7 +10,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * @date 2023/7/8
  **/
 @Retention(SOURCE)
-public @interface UserFollowType {
+public @interface FollowAccountType {
     int DOU_YIN = 0;
     int X_HONG_SHU = 1;
 

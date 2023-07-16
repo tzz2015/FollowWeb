@@ -4,10 +4,7 @@ import com.example.follow.model.FollowAccount;
 import com.example.follow.model.response.ResponseResult;
 import com.example.follow.service.FollowAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,8 +24,14 @@ public class FollowAccountController {
     public FollowAccount update(@RequestBody FollowAccount follow) {
         return followAccountService.createOrSave(follow.getFollowType(), follow.getAccount());
     }
-    @PostMapping("/list")
-    public List<FollowAccount> findAll(){
+
+    @GetMapping("/list")
+    public List<FollowAccount> findAll() {
         return followAccountService.findAll();
+    }
+
+    @GetMapping("/followList/{followType}")
+    public List<FollowAccount> findEnableFollowList(@PathVariable("followType") int followType) {
+        return followAccountService.findEnableFollowList(followType);
     }
 }

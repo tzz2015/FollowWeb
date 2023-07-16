@@ -5,7 +5,13 @@ import com.example.follow.model.FollowAccount;
 import com.example.follow.model.response.ResultCode;
 import com.example.follow.repository.FollowAccountRepository;
 import com.example.follow.utils.TextUtil;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,5 +67,25 @@ public class FollowAccountServiceImpl implements FollowAccountService {
     @Override
     public FollowAccount findByType(int type, long userId) {
         return followAccountRepository.findByFollowTypeAndUserId(type, userId);
+    }
+
+    /**
+     * 查找可关注的列表
+     *
+     * @param followType
+     * @return
+     */
+    @Override
+    public List<FollowAccount> findEnableFollowList(int followType) {
+        Specification<FollowAccount> specification = (Root<FollowAccount> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
+            Predicate followTypePredicate = criteriaBuilder.equal(root.get("followType"), followType);
+            Predicate userPredicate = criteriaBuilder.notEqual(root.get("userId"), securityUser.getUserId());
+            Predicate followedCountPredicate = criteriaBuilder.greaterThan(root.get("needFollowedCount"), 0);
+            Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, followedCountPredicate);
+            query.orderBy(criteriaBuilder.asc(root.get("needFollowedCount")));
+            return predicate;
+        };
+
+        return followAccountRepository.findAll(specification, PageRequest.of(0, 100)).getContent();
     }
 }

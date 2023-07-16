@@ -2,6 +2,7 @@ package com.example.follow.service;
 
 import com.example.follow.config.securty.SecurityConfig;
 import com.example.follow.except.BusinessException;
+import com.example.follow.model.FollowAccountType;
 import com.example.follow.model.user.User;
 import com.example.follow.model.user.UserRoles;
 import com.example.follow.repository.UserRepository;
@@ -27,6 +28,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private SecurityConfig securityConfig;
+    @Autowired
+    private FollowService followService;
 
     @Override
     public User findUserByPhone(String phone) {
@@ -54,6 +57,7 @@ public class UserServiceImpl implements UserService {
         map.put("username", findUser.getUsername());
         map.put("email", findUser.getEmail());
         map.put(Constants.HEADER_STRING, jwt);
+        followService.calibrateFollowCount(FollowAccountType.DOU_YIN);
         return map;
     }
 

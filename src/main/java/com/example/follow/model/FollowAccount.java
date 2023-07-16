@@ -36,6 +36,8 @@ public class FollowAccount {
 
     private int followCount;
 
+    private int payFollowCount;
+
     @Column(name = "createTime", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createTime;

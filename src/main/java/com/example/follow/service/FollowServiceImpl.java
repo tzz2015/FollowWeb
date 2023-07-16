@@ -64,7 +64,7 @@ public class FollowServiceImpl implements FollowService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
                 // 忽略大小写
                 .withIgnoreCase()
-                .withIncludeNullValues();
+                .withIgnoreNullValues();
         Example<Follow> example = Example.of(follow, matcher);
         List<Follow> list = followRepository.findAll(example);
         return list.isEmpty() ? null : list.get(0);
