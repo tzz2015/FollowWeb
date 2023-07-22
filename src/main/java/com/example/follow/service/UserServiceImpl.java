@@ -2,7 +2,6 @@ package com.example.follow.service;
 
 import com.example.follow.config.securty.SecurityConfig;
 import com.example.follow.except.BusinessException;
-import com.example.follow.model.FollowAccountType;
 import com.example.follow.model.user.User;
 import com.example.follow.model.user.UserRoles;
 import com.example.follow.repository.UserRepository;
@@ -62,7 +61,7 @@ public class UserServiceImpl implements UserService {
         map.put("username", findUser.getUsername());
         map.put("email", findUser.getEmail());
         map.put(Constants.HEADER_STRING, jwt);
-        followService.calibrateFollowCount(FollowAccountType.DOU_YIN);
+//        followService.calibrateFollowCount(FollowAccountType.DOU_YIN);
         return map;
     }
 
@@ -161,6 +160,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new BusinessException("验证码错误");
         }
+    }
+
+    @Override
+    public long totalUserCount() {
+        return userRepository.count();
     }
 
 

@@ -132,6 +132,6 @@ public class FollowServiceImpl implements FollowService {
      */
     @Override
     public long totalCount() {
-        return followAccountService.findAll().size();
+        return followRepository.findAll().size();
     }
 }

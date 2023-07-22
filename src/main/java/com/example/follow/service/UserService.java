@@ -32,4 +32,6 @@ public interface UserService {
      * @param user
      */
     User changePsw(String code, User user);
+
+    long totalUserCount();
 }

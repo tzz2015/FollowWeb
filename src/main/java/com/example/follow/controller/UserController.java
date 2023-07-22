@@ -62,6 +62,11 @@ public class UserController {
         return "退出登录成功";
     }
 
+    @GetMapping("/userList")
+    public long getTotalUser() {
+        return userService.totalUserCount();
+    }
+
 
 }
 
