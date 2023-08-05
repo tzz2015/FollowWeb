@@ -69,6 +69,27 @@ public class FollowAccountServiceImpl implements FollowAccountService {
         return followAccountRepository.findByFollowTypeAndUserId(type, userId);
     }
 
+    @Override
+    public FollowAccount findByType(int type) {
+        return findByType(type, securityUser.getUserId());
+    }
+
+    /**
+     * 校验账户是否可以被关注
+     *
+     * @param type
+     * @param userId
+     * @return
+     */
+    @Override
+    public FollowAccount checkIsCanFollow(int type, long userId) {
+        FollowAccount followAccount = findByType(type, userId);
+        if (followAccount != null && followAccount.getNeedFollowedCount() <= 0) {
+            return null;
+        }
+        return null;
+    }
+
     /**
      * 查找可关注的列表
      *

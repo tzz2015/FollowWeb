@@ -2,6 +2,7 @@ package com.example.follow.service;
 
 import com.example.follow.config.securty.SecurityConfig;
 import com.example.follow.except.BusinessException;
+import com.example.follow.model.FollowAccountType;
 import com.example.follow.model.user.User;
 import com.example.follow.model.user.UserRoles;
 import com.example.follow.repository.UserRepository;
@@ -54,6 +55,7 @@ public class UserServiceImpl implements UserService {
         if (!securityConfig.passwordEncoder().matches(user.getPassword(), findUser.getPassword())) {
             throw new BusinessException("用户名或密码错误");
         }
+        logout();
         String jwt = JwtUtil.createJWT(findUser.getPhone());
         System.out.println(jwt);
         HashMap<String, Object> map = new HashMap<>();
@@ -61,7 +63,6 @@ public class UserServiceImpl implements UserService {
         map.put("username", findUser.getUsername());
         map.put("email", findUser.getEmail());
         map.put(Constants.HEADER_STRING, jwt);
-//        followService.calibrateFollowCount(FollowAccountType.DOU_YIN);
         return map;
     }
 
@@ -91,26 +92,32 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public User updateUser(User user) {
-        User loginUser = securityUser.getLoginUser();
-        if (loginUser != null) {
+    /**
+     * 修改手机号码 邮箱 密码
+     *
+     * @param user
+     * @return
+     */
+    public User updateUser(User user, User saveUser) {
+//        User loginUser = securityUser.getLoginUser();
+        if (saveUser != null) {
             if (TextUtil.isNotEmpty(user.getPhone())) {
                 if (!FormatUtil.isMobile(user.getPhone())) {
                     throw new BusinessException("手机号码格式不正确");
                 }
-                loginUser.setPhone(user.getPhone());
+                saveUser.setPhone(user.getPhone());
             }
             if (TextUtil.isNotEmpty(user.getEmail()) && FormatUtil.isEmail(user.getEmail())) {
-                loginUser.setEmail(user.getEmail());
+                saveUser.setEmail(user.getEmail());
             }
             if (TextUtil.isNotEmpty(user.getPassword())) {
                 if (!FormatUtil.isPassword(user.getPassword())) {
                     throw new BusinessException("请输入6-20位由字母和数字组成的密码");
                 }
                 String encodePsw = securityConfig.passwordEncoder().encode(user.getPassword());
-                loginUser.setPassword(encodePsw);
+                saveUser.setPassword(encodePsw);
             }
-            return userRepository.save(loginUser);
+            return userRepository.save(saveUser);
         } else {
             throw new BusinessException("用户不存在");
         }
@@ -154,17 +161,27 @@ public class UserServiceImpl implements UserService {
         if (!FormatUtil.isEmail(user.getEmail())) {
             throw new BusinessException("邮箱错误");
         }
+        User findUser = userRepository.findByPhoneAndEmail(user.getPhone(), user.getEmail());
+        if (findUser == null) {
+            throw new BusinessException("手机号码绑定的邮箱不正确");
+        }
         if (emailService.verifyVerificationCode(user.getEmail(), code)) {
             emailService.clearVerificationCode(user.getEmail());
-            return updateUser(user);
+            return updateUser(user, findUser);
         } else {
             throw new BusinessException("验证码错误");
         }
     }
 
+
     @Override
     public long totalUserCount() {
         return userRepository.count();
+    }
+
+    @Override
+    public void updateFollow() {
+        followService.calibrateFollowCount(FollowAccountType.DOU_YIN);
     }
 
 

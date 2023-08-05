@@ -10,7 +10,7 @@ public class Constants {
     /**
      * 配置令牌环在http heads中的键值
      */
-    public static final String HEADER_STRING = "Authorization";
+    public static final String HEADER_STRING = "token";
 
     /**
      * 令牌环头标识

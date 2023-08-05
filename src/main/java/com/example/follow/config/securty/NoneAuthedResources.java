@@ -34,7 +34,7 @@ public class NoneAuthedResources {
             "/api/login",
             "/api/create",
             "/api/sendCode",
-            "/api/changePsw",
+            "/api/changePsw/*",
             "/api/userList",
             "/api/suggestion/add",
             "/api/follow/count",

@@ -30,8 +30,20 @@ public class FollowAccountController {
         return followAccountService.findAll();
     }
 
+    @GetMapping("/account/{followType}")
+    public FollowAccount getFollowAccount(@PathVariable("followType") int followType) {
+        return followAccountService.findByType(followType);
+    }
+
     @GetMapping("/followList/{followType}")
     public List<FollowAccount> findEnableFollowList(@PathVariable("followType") int followType) {
         return followAccountService.findEnableFollowList(followType);
     }
+
+    @GetMapping("/followCheck")
+    public boolean checkIsCanFollow(@RequestBody FollowAccount follow) {
+        return followAccountService.checkIsCanFollow(follow.getFollowType(), follow.getUserId()) != null;
+    }
+
+
 }

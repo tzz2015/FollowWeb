@@ -19,7 +19,7 @@ public interface UserService {
 
     User createUser(User user);
 
-    User updateUser(User user);
+    User updateUser(User user, User saveUser);
 
     void logout();
 
@@ -33,5 +33,9 @@ public interface UserService {
      */
     User changePsw(String code, User user);
 
+
+
     long totalUserCount();
+
+    void updateFollow();
 }

@@ -43,6 +43,23 @@ public interface FollowAccountService {
     FollowAccount findByType(int type, long userId);
 
     /**
+     * 根据类型查找
+     *
+     * @param type
+     * @return
+     */
+    FollowAccount findByType(int type);
+
+    /**
+     * 校验账户是否可以被关注
+     *
+     * @param type
+     * @param userId
+     * @return
+     */
+    FollowAccount checkIsCanFollow(int type, long userId);
+
+    /**
      * 查找可关注的列表
      *
      * @param followType

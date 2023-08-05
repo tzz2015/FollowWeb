@@ -37,7 +37,7 @@ public class UserController {
 
     @PostMapping("/updateUser")
     public User updateUser(@RequestBody User user) {
-        return userService.updateUser(user);
+        return userService.updateUser(user,securityUser.getLoginUser());
     }
 
     @PostMapping("/sendCode")
