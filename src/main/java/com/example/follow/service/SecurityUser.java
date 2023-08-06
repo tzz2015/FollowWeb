@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -27,8 +28,13 @@ public class SecurityUser {
         if (ObjectUtils.isEmpty(userId)) {
             throw new BusinessException(ResultCode.UNAUTHORIZED);
         }
-        return (Long) userId;
+        try {
+            return NumberUtils.parseNumber(userId.toString(), Long.class);
+        } catch (Exception e) {
+            return -1L;
+        }
     }
+
 
     /**
      * 获取当前登录人

@@ -26,6 +26,8 @@ public class Suggestion {
     @Column(nullable = false, unique = true)
     private String content;
 
+    private Long userId;
+
     @Column(name = "createTime", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createTime;

@@ -87,7 +87,7 @@ public class FollowAccountServiceImpl implements FollowAccountService {
         if (followAccount != null && followAccount.getNeedFollowedCount() <= 0) {
             return null;
         }
-        return null;
+        return followAccount;
     }
 
     /**
@@ -106,7 +106,6 @@ public class FollowAccountServiceImpl implements FollowAccountService {
             query.orderBy(criteriaBuilder.asc(root.get("needFollowedCount")));
             return predicate;
         };
-
         return followAccountRepository.findAll(specification, PageRequest.of(0, 100)).getContent();
     }
 }

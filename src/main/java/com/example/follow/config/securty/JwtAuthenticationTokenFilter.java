@@ -39,17 +39,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
-        for (String reg : NoneAuthedResources.BACKEND_RESOURCES) {
-            if (pathmatcher.match(reg, request.getServletPath())) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-        }
 
         String token = request.getHeader(Constants.HEADER_STRING);
 
         if (!StringUtils.hasText(token) || !token.startsWith(Constants.TOKEN_PREFIX)) {
-            filterChain.doFilter(request, response);
+//            filterChain.doFilter(request, response);
+            for (String reg : NoneAuthedResources.BACKEND_RESOURCES) {
+                if (pathmatcher.match(reg, request.getServletPath())) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+            }
             return;
         }
 
