@@ -40,7 +40,7 @@ public class FollowAccountController {
         return followAccountService.findEnableFollowList(followType);
     }
 
-    @GetMapping("/followCheck")
+    @PostMapping("/followCheck")
     public boolean checkIsCanFollow(@RequestBody FollowAccount follow) {
         return followAccountService.checkIsCanFollow(follow.getFollowType(), follow.getUserId()) != null;
     }
