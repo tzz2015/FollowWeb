@@ -10,6 +10,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -133,5 +134,21 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public long totalCount() {
         return followRepository.findAll().size();
+    }
+
+    /**
+     * 获取当前用户关注的用户列表
+     *
+     * @param followType
+     * @return
+     */
+    @Override
+    public List<String> getUserFollowAccount(int followType) {
+        List<String> accountList = new ArrayList<>();
+        List<Follow> followList = followRepository.findByUserIdAndFollowType(securityUser.getUserId(), followType);
+        for (Follow follow : followList) {
+            accountList.add(follow.getFollowAccount());
+        }
+        return accountList;
     }
 }

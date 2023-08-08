@@ -4,6 +4,8 @@ import com.example.follow.model.Follow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author LYF
  * @dec:
@@ -12,8 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-
-
-
-
+    List<Follow> findByUserIdAndFollowType(Long userId,int followType);
 }

@@ -27,6 +27,8 @@ public class FollowAccountServiceImpl implements FollowAccountService {
     private FollowAccountRepository followAccountRepository;
     @Autowired
     private SecurityUser securityUser;
+    @Autowired
+    private FollowService followService;
 
     @Override
     public FollowAccount createOrSave(int type, String account) {
@@ -98,11 +100,14 @@ public class FollowAccountServiceImpl implements FollowAccountService {
      */
     @Override
     public List<FollowAccount> findEnableFollowList(int followType) {
+        List<String> userFollowList = followService.getUserFollowAccount(followType);
         Specification<FollowAccount> specification = (Root<FollowAccount> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             Predicate followTypePredicate = criteriaBuilder.equal(root.get("followType"), followType);
             Predicate userPredicate = criteriaBuilder.notEqual(root.get("userId"), securityUser.getUserId());
             Predicate followedCountPredicate = criteriaBuilder.greaterThan(root.get("needFollowedCount"), 0);
-            Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, followedCountPredicate);
+            // 添加 account 不在 userFollowList 中的条件
+            Predicate accountNotInPredicate = criteriaBuilder.not(root.get("account").in(userFollowList));
+            Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, followedCountPredicate, accountNotInPredicate);
             query.orderBy(criteriaBuilder.asc(root.get("needFollowedCount")));
             return predicate;
         };

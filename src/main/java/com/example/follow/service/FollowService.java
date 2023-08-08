@@ -2,6 +2,8 @@ package com.example.follow.service;
 
 import com.example.follow.model.Follow;
 
+import java.util.List;
+
 /**
  * @author LYF
  * @dec:
@@ -45,4 +47,11 @@ public interface FollowService {
      * @return
      */
     long totalCount();
+
+    /**
+     * 获取当前用户关注的用户列表
+     * @param followType
+     * @return
+     */
+    List<String> getUserFollowAccount(int followType);
 }
