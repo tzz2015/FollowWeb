@@ -105,8 +105,10 @@ public class FollowAccountServiceImpl implements FollowAccountService {
             Predicate followTypePredicate = criteriaBuilder.equal(root.get("followType"), followType);
             Predicate userPredicate = criteriaBuilder.notEqual(root.get("userId"), securityUser.getUserId());
             Predicate followedCountPredicate = criteriaBuilder.greaterThan(root.get("needFollowedCount"), 0);
-            // 添加 account 不在 userFollowList 中的条件
-            Predicate accountNotInPredicate = criteriaBuilder.not(root.get("account").in(userFollowList));
+            Predicate accountNotInPredicate = criteriaBuilder.conjunction();
+            if (!userFollowList.isEmpty()) {
+                accountNotInPredicate = criteriaBuilder.not(root.get("account").in(userFollowList));
+            }
             Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, followedCountPredicate, accountNotInPredicate);
             query.orderBy(criteriaBuilder.asc(root.get("needFollowedCount")));
             return predicate;
