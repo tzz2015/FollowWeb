@@ -8,6 +8,7 @@ import com.example.follow.model.user.User;
 import com.example.follow.service.UserService;
 import com.example.follow.utils.Constants;
 import com.example.follow.utils.JwtUtil;
+import com.example.follow.utils.TextUtil;
 import com.example.follow.utils.WebUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -36,11 +37,21 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
     private static final PathMatcher pathmatcher = new AntPathMatcher();
+    private static int MIN_VERSION = 100;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
 
         String token = request.getHeader(Constants.HEADER_STRING);
+        String version = request.getHeader(Constants.HEADER_VERSION);
+        if (!TextUtil.isEmpty(version)) {
+            version = version.replaceAll("\\.", "");
+            int versionCode = Integer.parseInt(version);
+            if (versionCode < MIN_VERSION) {
+                errorUpdate(response);
+                return;
+            }
+        }
 
         if (!StringUtils.hasText(token) || !token.startsWith(Constants.TOKEN_PREFIX)) {
 //            filterChain.doFilter(request, response);
@@ -82,6 +93,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private void error(HttpServletResponse response) {
         Result failure = ResultResponse.failure(ResultCode.UNAUTHORIZED);
+        String json = JSON.toJSONString(failure);
+        WebUtils.renderString(response, json);
+    }
+
+    private void errorUpdate(HttpServletResponse response) {
+        Result failure = ResultResponse.failure(ResultCode.BAD_REQUEST);
+        failure.setMessage("该版本已经不可用，请升级软件");
         String json = JSON.toJSONString(failure);
         WebUtils.renderString(response, json);
     }

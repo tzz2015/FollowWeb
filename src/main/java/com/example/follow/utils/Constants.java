@@ -11,6 +11,8 @@ public class Constants {
      * 配置令牌环在http heads中的键值
      */
     public static final String HEADER_STRING = "token";
+    public static final String HEADER_VERSION = "version";
+
 
     /**
      * 令牌环头标识
