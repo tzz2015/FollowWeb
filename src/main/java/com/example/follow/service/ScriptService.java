@@ -13,6 +13,6 @@ public interface ScriptService {
      */
     ScriptModel createModel(ScriptModel scriptModel);
 
-    ScriptModel findModel(int version,boolean isDebug);
+    ScriptModel findModel(int version, int followType, boolean isDebug);
 
 }

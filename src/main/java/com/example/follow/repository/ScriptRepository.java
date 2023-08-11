@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
  **/
 @Repository
 public interface ScriptRepository extends JpaRepository<ScriptModel, Long> {
+    ScriptModel findByFollowType(int followType);
 }

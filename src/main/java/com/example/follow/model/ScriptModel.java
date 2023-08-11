@@ -20,6 +20,7 @@ public class ScriptModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Integer followType;
     private Integer version;
     private String decryptKey;
     @Lob

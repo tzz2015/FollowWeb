@@ -8,8 +8,6 @@ import com.example.follow.utils.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author LYF
  * @dec:
@@ -31,9 +29,8 @@ public class ScriptServiceImpl implements ScriptService {
         if (TextUtil.isEmpty(scriptModel.getScriptText())) {
             throw new BusinessException("脚本不能为空");
         }
-        List<ScriptModel> modelList = scriptRepository.findAll();
-        if (!modelList.isEmpty()) {
-            saveModel = modelList.get(0);
+        saveModel = scriptRepository.findByFollowType(scriptModel.getFollowType());
+        if (saveModel != null) {
             saveModel.setVersion(scriptModel.getVersion());
             saveModel.setScriptText(scriptModel.getScriptText());
         } else {
@@ -43,12 +40,11 @@ public class ScriptServiceImpl implements ScriptService {
     }
 
     @Override
-    public ScriptModel findModel(int version, boolean isDebug) {
-        List<ScriptModel> modelList = scriptRepository.findAll();
-        if (modelList.isEmpty()) {
+    public ScriptModel findModel(int version, int followType, boolean isDebug) {
+        ScriptModel scriptModel = scriptRepository.findByFollowType(followType);
+        if (scriptModel == null) {
             return null;
         }
-        ScriptModel scriptModel = modelList.get(0);
         if (!isDebug && scriptModel.getVersion() != null && version <= scriptModel.getVersion()) {
             return null;
         }

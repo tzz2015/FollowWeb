@@ -20,16 +20,17 @@ public class ScriptController {
 
 
     @PostMapping("/add")
-    public ScriptModel update(@RequestParam("version") int version, @RequestParam("scriptText") String scriptText) {
+    public ScriptModel update(@RequestParam("version") int version, @RequestParam("followType") int followType, @RequestParam("scriptText") String scriptText) {
         ScriptModel scriptModel = new ScriptModel();
         scriptModel.setVersion(version);
+        scriptModel.setFollowType(followType);
         scriptModel.setScriptText(scriptText);
         return scriptService.createModel(scriptModel);
     }
 
     @PostMapping("/find")
-    public ScriptModel find(@RequestParam("version") int version, @RequestParam("isDebug") boolean isDebug) {
-        return scriptService.findModel(version, isDebug);
+    public ScriptModel find(@RequestParam("version") int version, @RequestParam("followType") int followType, @RequestParam("isDebug") boolean isDebug) {
+        return scriptService.findModel(version, followType, isDebug);
     }
 
 
