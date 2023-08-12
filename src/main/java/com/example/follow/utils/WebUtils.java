@@ -1,7 +1,7 @@
 package com.example.follow.utils;
 
-import jakarta.servlet.http.HttpServletResponse;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

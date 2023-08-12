@@ -1,11 +1,11 @@
 package com.example.follow.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**

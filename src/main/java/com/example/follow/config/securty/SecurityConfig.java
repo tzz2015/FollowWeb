@@ -71,13 +71,13 @@ public class SecurityConfig {
                 // 前后端分离架构不需要csrf保护
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         // 允许所有OPTIONS请求
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(NoneAuthedResources.BACKEND_RESOURCES).permitAll()
+                        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .antMatchers(NoneAuthedResources.BACKEND_RESOURCES).permitAll()
                         // 允许直接访问授权登录接口
                         //一般浏览器访问url为get请求，而前端请求设置中为post，增加安全
-                        .requestMatchers(HttpMethod.POST, "/user/account/token/").permitAll()
+                        .antMatchers(HttpMethod.POST, "/user/account/token/").permitAll()
                         // 允许 SpringMVC 的默认错误地址匿名访问
-                        .requestMatchers("/error").permitAll()
+                        .antMatchers("/error").permitAll()
                         // 其他所有接口必须有Authority信息，Authority在登录成功后的UserDetailsImpl对象中默认设置“ROLE_USER”
                         //.requestMatchers("/**").hasAnyAuthority("ROLE_USER")
                         // 所有请求将会拦截，除了已经登录
@@ -98,7 +98,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         // 将前端请求全双工放行
         //使用WebSecurity.ignoring()忽略某些URL请求，这些请求将被Spring Security忽略，这意味着这些URL将有受到 CSRF、XSS、Clickjacking 等攻击的可能。
-        return (web) -> web.ignoring().requestMatchers("/websocket/**");
+        return (web) -> web.ignoring().antMatchers("/websocket/**");
     }
 
     /**
