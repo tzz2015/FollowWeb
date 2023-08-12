@@ -1,8 +1,10 @@
 package com.example.follow.controller;
 
+import com.example.follow.model.AdSwitchModel;
 import com.example.follow.model.response.ResponseResult;
 import com.example.follow.model.response.ResultCode;
 import com.example.follow.model.user.User;
+import com.example.follow.service.AdSwitchService;
 import com.example.follow.service.SecurityUser;
 import com.example.follow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private SecurityUser securityUser;
+    @Autowired
+    private AdSwitchService adSwitchService;
 
 
     @PostMapping("/login")
@@ -37,7 +41,7 @@ public class UserController {
 
     @PostMapping("/updateUser")
     public User updateUser(@RequestBody User user) {
-        return userService.updateUser(user,securityUser.getLoginUser());
+        return userService.updateUser(user, securityUser.getLoginUser());
     }
 
     @PostMapping("/sendCode")
@@ -67,6 +71,9 @@ public class UserController {
         return userService.totalUserCount();
     }
 
-
+    @PostMapping("/adSwitch")
+    public AdSwitchModel adSwitch(@RequestBody AdSwitchModel adSwitchModel) {
+        return adSwitchService.unpdateAdSwitchModel(adSwitchModel);
+    }
 }
 
