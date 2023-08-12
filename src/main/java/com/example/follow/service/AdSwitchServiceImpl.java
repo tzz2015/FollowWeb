@@ -31,4 +31,14 @@ public class AdSwitchServiceImpl implements AdSwitchService {
         }
         return adSwitchRepository.save(save);
     }
+
+    @Override
+    public AdSwitchModel getAdSwitchModel() {
+        List<AdSwitchModel> list = adSwitchRepository.findAll();
+        if (!list.isEmpty()) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
 }

@@ -75,5 +75,10 @@ public class UserController {
     public AdSwitchModel updateAdSwitch(@RequestBody AdSwitchModel adSwitchModel) {
         return adSwitchService.unpdateAdSwitchModel(adSwitchModel);
     }
+
+    @GetMapping("/getAdSwitch")
+    public AdSwitchModel getAdSwitch() {
+        return adSwitchService.getAdSwitchModel();
+    }
 }
 
