@@ -110,7 +110,7 @@ public class FollowAccountServiceImpl implements FollowAccountService {
                 accountNotInPredicate = criteriaBuilder.not(root.get("account").in(userFollowList));
             }
             Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, followedCountPredicate, accountNotInPredicate);
-            query.orderBy(criteriaBuilder.asc(root.get("needFollowedCount")));
+            query.orderBy(criteriaBuilder.asc(root.get("needFollowedCount")), criteriaBuilder.desc(root.get("createTime")));
             return predicate;
         };
         return followAccountRepository.findAll(specification, PageRequest.of(0, 30)).getContent();
