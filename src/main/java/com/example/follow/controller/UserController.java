@@ -71,8 +71,8 @@ public class UserController {
         return userService.totalUserCount();
     }
 
-    @PostMapping("/adSwitch")
-    public AdSwitchModel adSwitch(@RequestBody AdSwitchModel adSwitchModel) {
+    @PostMapping("/updateAdSwitch")
+    public AdSwitchModel updateAdSwitch(@RequestBody AdSwitchModel adSwitchModel) {
         return adSwitchService.unpdateAdSwitchModel(adSwitchModel);
     }
 }
