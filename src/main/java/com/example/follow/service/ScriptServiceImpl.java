@@ -45,7 +45,7 @@ public class ScriptServiceImpl implements ScriptService {
         if (scriptModel == null) {
             return null;
         }
-        if (!isDebug && scriptModel.getVersion() != null && version <= scriptModel.getVersion()) {
+        if (!isDebug && scriptModel.getVersion() != null && version >= scriptModel.getVersion()) {
             return null;
         }
         String scripText = scriptModel.getScriptText();
