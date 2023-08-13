@@ -39,7 +39,7 @@ public class FollowServiceImpl implements FollowService {
         follow.setUserId(securityUser.getUserId());
         Follow findFollow = find(follow);
         if (findFollow != null) {
-            throw new BusinessException("已经关注");
+           return findFollow;
         }
         try {
             Follow save = followRepository.save(follow);
