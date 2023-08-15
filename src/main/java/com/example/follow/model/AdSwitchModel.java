@@ -23,15 +23,19 @@ public class AdSwitchModel {
     /**
      * 开屏页面广告开关
      */
-    private boolean startSwitch;
+    private boolean startSwitch = false;
     /**
      * banner
      */
-    private boolean bannerSwitch;
+    private boolean bannerSwitch = false;
     /**
      * 点击关注广告开关
      */
-    private boolean followSwitch;
+    private boolean followSwitch = false;
+    /**
+     * 插屏广告
+     */
+    private boolean tableSwitch = false;
 
 
 }

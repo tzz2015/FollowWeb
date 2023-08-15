@@ -24,6 +24,8 @@ public class Spread {
     private String title;
     @Column(nullable = false, unique = true)
     private String url;
-
-    private int weight;
+    /**
+     * 权重
+     */
+    private int weight = 0;
 }
