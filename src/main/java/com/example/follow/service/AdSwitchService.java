@@ -10,6 +10,6 @@ import com.example.follow.model.AdSwitchModel;
 public interface AdSwitchService {
     AdSwitchModel unpdateAdSwitchModel(AdSwitchModel adSwitchModel);
 
-    AdSwitchModel getAdSwitchModel();
+    AdSwitchModel getAdSwitchModel(String version);
 
 }

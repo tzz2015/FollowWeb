@@ -20,6 +20,8 @@ public class AdSwitchModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String version;
     /**
      * 开屏页面广告开关
      */
@@ -31,11 +33,16 @@ public class AdSwitchModel {
     /**
      * 点击关注广告开关
      */
-    private boolean followSwitch = false;
+    private int followSwitchNum = -1;
     /**
      * 插屏广告
      */
     private boolean tableSwitch = false;
+
+    /**
+     * 预留
+     */
+    private boolean reserveSwitch = false;
 
 
 }

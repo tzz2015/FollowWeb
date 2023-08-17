@@ -2,10 +2,9 @@ package com.example.follow.service;
 
 import com.example.follow.model.AdSwitchModel;
 import com.example.follow.repository.AdSwitchRepository;
+import com.example.follow.utils.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author LYF
@@ -19,26 +18,27 @@ public class AdSwitchServiceImpl implements AdSwitchService {
 
     @Override
     public AdSwitchModel unpdateAdSwitchModel(AdSwitchModel adSwitchModel) {
+        if (TextUtil.isEmpty(adSwitchModel.getVersion())) {
+            return null;
+        }
         AdSwitchModel save;
-        List<AdSwitchModel> list = adSwitchRepository.findAll();
-        if (list.isEmpty()) {
+        AdSwitchModel findAdSwitchModel = adSwitchRepository.findByVersion(adSwitchModel.getVersion());
+        if (findAdSwitchModel == null) {
             save = adSwitchModel;
         } else {
-            save = list.get(0);
+            save = findAdSwitchModel;
             save.setStartSwitch(adSwitchModel.isStartSwitch());
             save.setBannerSwitch(adSwitchModel.isBannerSwitch());
-            save.setFollowSwitch(adSwitchModel.isFollowSwitch());
+            save.setFollowSwitchNum(adSwitchModel.getFollowSwitchNum());
         }
         return adSwitchRepository.save(save);
     }
 
     @Override
-    public AdSwitchModel getAdSwitchModel() {
-        List<AdSwitchModel> list = adSwitchRepository.findAll();
-        if (!list.isEmpty()) {
-            return list.get(0);
-        } else {
+    public AdSwitchModel getAdSwitchModel(String version) {
+        if (TextUtil.isEmpty(version)) {
             return null;
         }
+        return adSwitchRepository.findByVersion(version);
     }
 }

@@ -76,9 +76,9 @@ public class UserController {
         return adSwitchService.unpdateAdSwitchModel(adSwitchModel);
     }
 
-    @GetMapping("/getAdSwitch")
-    public AdSwitchModel getAdSwitch() {
-        return adSwitchService.getAdSwitchModel();
+    @PostMapping("/getAdSwitch")
+    public AdSwitchModel getAdSwitch(@RequestParam("version") String version) {
+        return adSwitchService.getAdSwitchModel(version);
     }
 }
 

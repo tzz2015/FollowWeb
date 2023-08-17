@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdSwitchRepository extends JpaRepository<AdSwitchModel, Long> {
 
-
+    AdSwitchModel findByVersion(String version);
 
 }
 
