@@ -25,7 +25,7 @@ public class ScriptModel {
     private Integer version;
     private String decryptKey;
     @Lob
-    @Column(columnDefinition = "TEXT", nullable = false, updatable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String scriptText;
 
 
