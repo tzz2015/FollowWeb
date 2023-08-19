@@ -24,6 +24,11 @@ public class FollowController {
         return followService.addFollow(follow);
     }
 
+    @PostMapping("/earlyAdd")
+    public Follow addEarlyFollow(@RequestBody Follow follow) {
+        return followService.addEarlyFollow(follow);
+    }
+
     @GetMapping("/count")
     public long totalCount() {
         return followService.totalCount();

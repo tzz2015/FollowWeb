@@ -19,6 +19,14 @@ public interface FollowService {
     Follow addFollow(Follow follow);
 
     /**
+     * 早期关注的用户
+     *
+     * @param follow
+     * @return
+     */
+    Follow addEarlyFollow(Follow follow);
+
+    /**
      * 查询记录
      *
      * @param follow
@@ -50,6 +58,7 @@ public interface FollowService {
 
     /**
      * 获取当前用户关注的用户列表
+     *
      * @param followType
      * @return
      */

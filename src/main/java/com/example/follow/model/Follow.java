@@ -31,6 +31,10 @@ public class Follow {
 
     @Column(nullable = false)
     private String followAccount;
+    /**
+     * 早期关注
+     */
+    private boolean isEarlyFollowed = false;
 
     @Column(name = "createTime", nullable = false, updatable = false)
     @CreationTimestamp

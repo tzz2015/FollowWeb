@@ -53,6 +53,23 @@ public class FollowServiceImpl implements FollowService {
     }
 
     /**
+     * 早期关注的用户
+     *
+     * @param follow
+     * @return
+     */
+    @Override
+    public Follow addEarlyFollow(Follow follow) {
+        follow.setEarlyFollowed(true);
+        follow.setUserId(securityUser.getUserId());
+        Follow findFollow = find(follow);
+        if (findFollow != null) {
+            return findFollow;
+        }
+        return  followRepository.save(follow);
+    }
+
+    /**
      * 查询记录
      *
      * @param follow
