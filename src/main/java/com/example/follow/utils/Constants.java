@@ -20,7 +20,7 @@ public class Constants {
     public static final String TOKEN_PREFIX = "Bearer";
 
     // 有效期14天
-    public static final long JWT_TTL = 60 * 60 * 1000L * 24 * 14;
+    public static final long JWT_TTL = 60 * 60 * 1000L * 24 * 3;
 
     // 密钥，内容是随机字符串，长度必须足够长，只能是大小写英文和数字
     public static final String JWT_KEY = "SDFGjhdsfalshdfHFdsjkdsfds121232131afasdfac";

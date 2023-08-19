@@ -20,19 +20,26 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public Announcement updateAnnouncement(Announcement announcement) {
+        Announcement save;
         if (announcement.getId() != null) {
             Announcement first = announcementRepository.findFirstById(announcement.getId());
             if (first == null) {
                 throw new BusinessException("该条数据不存在");
             }
+            save = first;
+            save.setContent(announcement.getContent());
+            save.setTitle(announcement.getTitle());
+            save.setWeight(announcement.getWeight());
+        } else {
+            save = announcement;
         }
-        return announcementRepository.save(announcement);
+        return announcementRepository.save(save);
     }
 
     @Override
     public void deleteAnnouncement(long id) {
         Announcement spread = announcementRepository.findFirstById(id);
-        if(spread==null){
+        if (spread == null) {
             throw new BusinessException("该条数据不存在");
         }
         announcementRepository.deleteById(id);
