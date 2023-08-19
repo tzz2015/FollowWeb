@@ -3,6 +3,7 @@ package com.example.follow.service;
 import com.example.follow.model.user.User;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author LYF
@@ -34,8 +35,9 @@ public interface UserService {
     User changePsw(String code, User user);
 
 
-
     long totalUserCount();
 
     void updateFollow();
+
+    List<User> findAllUser(int page, int pageCount);
 }

@@ -5,10 +5,9 @@ import com.example.follow.model.response.ResponseResult;
 import com.example.follow.service.SecurityUser;
 import com.example.follow.service.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author LYF
@@ -29,5 +28,9 @@ public class SuggestionController {
     public Suggestion update(@RequestBody Suggestion suggestion) {
         suggestion.setUserId(securityUser.getUserId());
         return suggestionService.addSuggestion(suggestion);
+    }
+    @GetMapping("/list")
+    public List<Suggestion> allSuggestion() {
+        return suggestionService.getList();
     }
 }

@@ -4,7 +4,10 @@ import com.example.follow.except.BusinessException;
 import com.example.follow.model.Suggestion;
 import com.example.follow.repository.SuggestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author LYF
@@ -24,5 +27,11 @@ public class SuggestionServiceImpl implements SuggestionService {
         } catch (Exception e) {
             throw new BusinessException("请修改建议后提交");
         }
+    }
+
+    @Override
+    public List<Suggestion> getList() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        return suggestionRepository.findAll(sort);
     }
 }

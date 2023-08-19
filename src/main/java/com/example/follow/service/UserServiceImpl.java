@@ -11,11 +11,15 @@ import com.example.follow.utils.FormatUtil;
 import com.example.follow.utils.JwtUtil;
 import com.example.follow.utils.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -49,6 +53,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public HashMap<String, Object> login(User user) {
         User findUser = userRepository.findUserByPhone(user.getPhone());
+        if (findUser == null && FormatUtil.isEmail(user.getPhone())) {
+            findUser = userRepository.findUserByEmail(user.getPhone());
+        }
         if (findUser == null) {
             throw new BusinessException("用户不存在");
         }
@@ -182,6 +189,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateFollow() {
         followService.calibrateFollowCount(FollowAccountType.DOU_YIN);
+    }
+
+    /**
+     * 分页查找用户
+     *
+     * @param page
+     * @param pageCount
+     * @return
+     */
+    @Override
+    public List<User> findAllUser(int page, int pageCount) {
+        Pageable pageable = PageRequest.of(page, pageCount);
+        Page<User> findList = userRepository.findAll(pageable);
+        return findList.getContent();
     }
 
 

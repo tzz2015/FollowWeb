@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author LYF
@@ -67,8 +68,13 @@ public class UserController {
     }
 
     @GetMapping("/userList")
-    public long getTotalUser() {
+    public long totalUserCount() {
         return userService.totalUserCount();
+    }
+
+    @PostMapping("/findUserList")
+    public List<User> findUserList(@RequestParam("page") int page, @RequestParam("pageCount") int pageCount) {
+        return userService.findAllUser(page, pageCount);
     }
 
     @PostMapping("/updateAdSwitch")
