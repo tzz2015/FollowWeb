@@ -113,7 +113,7 @@ public class FollowServiceImpl implements FollowService {
     public void updateFollowedCount(int followType, long followedUserId) {
         FollowAccount followAccount = followAccountService.checkIsCanFollow(followType, followedUserId);
         if (followAccount == null) {
-            throw new RuntimeException("当前被关注用户不可被关注");
+            throw new BusinessException("当前被关注用户不可被关注");
         }
         int followedCount = followAccount.getFollowedCount() + 1;
         int needFollowedCount = followAccount.getNeedFollowedCount() - 1;

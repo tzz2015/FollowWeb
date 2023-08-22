@@ -44,7 +44,7 @@ public class FollowAccountServiceImpl implements FollowAccountService {
             followAccount.setFollowType(type);
             followAccount.setAccount(account);
             // 默认加十个被关注
-            followAccount.setNeedFollowedCount(10);
+            followAccount.setNeedFollowedCount(5);
         }
         return followAccountRepository.save(followAccount);
     }
@@ -113,6 +113,6 @@ public class FollowAccountServiceImpl implements FollowAccountService {
             query.orderBy(criteriaBuilder.asc(root.get("needFollowedCount")), criteriaBuilder.desc(root.get("createTime")));
             return predicate;
         };
-        return followAccountRepository.findAll(specification, PageRequest.of(0, 30)).getContent();
+        return followAccountRepository.findAll(specification, PageRequest.of(0, 20)).getContent();
     }
 }

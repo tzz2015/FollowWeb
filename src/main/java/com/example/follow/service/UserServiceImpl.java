@@ -2,7 +2,7 @@ package com.example.follow.service;
 
 import com.example.follow.config.securty.SecurityConfig;
 import com.example.follow.except.BusinessException;
-import com.example.follow.model.FollowAccountType;
+import com.example.follow.model.FollowType;
 import com.example.follow.model.user.User;
 import com.example.follow.model.user.UserRoles;
 import com.example.follow.repository.UserRepository;
@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateFollow() {
-        followService.calibrateFollowCount(FollowAccountType.DOU_YIN);
+        followService.calibrateFollowCount(FollowType.DOU_YIN);
     }
 
     /**

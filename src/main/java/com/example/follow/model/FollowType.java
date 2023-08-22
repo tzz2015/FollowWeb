@@ -10,8 +10,14 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * @date 2023/7/8
  **/
 @Retention(SOURCE)
-public @interface FollowAccountType {
+public @interface FollowType {
+    /**
+     * 抖音互粉
+     */
     int DOU_YIN = 0;
-    int X_HONG_SHU = 1;
+    /**
+     * 抖音互赞
+     */
+    int DOU_YIN_PRAISE = 1;
 
 }
