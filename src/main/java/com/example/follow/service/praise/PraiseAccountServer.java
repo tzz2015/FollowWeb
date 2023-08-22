@@ -60,6 +60,6 @@ public interface PraiseAccountServer {
      * @param followType
      * @return
      */
-    List<PraiseAccountModel> findEnablePraiseList(int followType);
+    List<Long> findEnablePraiseList(int followType);
 
 }

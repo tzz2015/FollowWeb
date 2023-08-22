@@ -15,6 +15,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -120,16 +121,20 @@ public class PraiseAccountServerImpl implements PraiseAccountServer {
      * @return
      */
     @Override
-    public List<PraiseAccountModel> findEnablePraiseList(int followType) {
+    public List<Long> findEnablePraiseList(int followType) {
         Specification<PraiseAccountModel> specification = (Root<PraiseAccountModel> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             Predicate followTypePredicate = criteriaBuilder.equal(root.get("followType"), followType);
             Predicate userPredicate = criteriaBuilder.notEqual(root.get("userId"), securityUser.getUserId());
-            Predicate followedCountPredicate = criteriaBuilder.greaterThan(root.get("needFollowedCount"), 0);
-            Predicate accountNotInPredicate = criteriaBuilder.conjunction();
-            Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, followedCountPredicate, accountNotInPredicate);
-            query.orderBy(criteriaBuilder.asc(root.get("needFollowedCount")), criteriaBuilder.desc(root.get("createTime")));
+            Predicate followedCountPredicate = criteriaBuilder.greaterThan(root.get("needPraiseCount"), 0);
+            Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, followedCountPredicate);
+            query.orderBy(criteriaBuilder.asc(root.get("needPraiseCount")), criteriaBuilder.desc(root.get("createTime")));
             return predicate;
         };
-        return repository.findAll(specification, PageRequest.of(0, 30)).getContent();
+        List<PraiseAccountModel> content = repository.findAll(specification, PageRequest.of(0, 30)).getContent();
+        List<Long> userlist = new ArrayList<>();
+        for (PraiseAccountModel model : content) {
+            userlist.add(model.getUserId());
+        }
+        return userlist;
     }
 }

@@ -24,9 +24,7 @@ public class PraiseVideoModel {
     private Long id;
     private Long userId;
     private int followType;
-    @Column(nullable = false, unique = true)
     private String title;
-    @Column(nullable = false, unique = true)
     private String url;
     private int count = 0;
     @Column(name = "createTime", nullable = false, updatable = false)
