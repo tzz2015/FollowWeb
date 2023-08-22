@@ -41,6 +41,7 @@ public class NoneAuthedResources {
             "/api/follow/count",
             "/api/spread/list",
             "/api/announcement/list",
+            "/api/praise/count",
             // Swagger及druid相关资源
             "/swagger**/**",
             "/webjars/**",

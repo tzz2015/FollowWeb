@@ -13,6 +13,8 @@ import java.util.List;
 public interface UserService {
     User findUserByPhone(String phone);
 
+    User findUserByEmail(String email);
+
     User findUserById(long userId);
 
     HashMap<String, Object> login(User user);

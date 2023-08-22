@@ -58,6 +58,7 @@ public class FollowServiceImpl implements FollowService {
      * @param follow
      * @return
      */
+    @Transactional
     @Override
     public Follow addEarlyFollow(Follow follow) {
         follow.setEarlyFollowed(true);

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -43,6 +44,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByPhone(String phone) {
         return userRepository.findUserByPhone(phone);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 
     @Override
@@ -92,6 +98,12 @@ public class UserServiceImpl implements UserService {
         if (userByPhone != null) {
             throw new BusinessException("用户已存在");
         }
+
+        User userByEmail = findUserByEmail(user.getPhone());
+        if (userByEmail != null) {
+            throw new BusinessException("邮箱已经被注册");
+        }
+
         String encodePassword = securityConfig.passwordEncoder().encode(user.getPassword());
         user.setPassword(encodePassword);
         user.setRoles(UserRoles.USER);
@@ -112,9 +124,20 @@ public class UserServiceImpl implements UserService {
                 if (!FormatUtil.isMobile(user.getPhone())) {
                     throw new BusinessException("手机号码格式不正确");
                 }
+                User userByPhone = findUserByPhone(user.getPhone());
+                if (userByPhone != null && !Objects.equals(userByPhone.getId(), saveUser.getId())) {
+                    throw new BusinessException("手机号已经被注册");
+                }
                 saveUser.setPhone(user.getPhone());
             }
-            if (TextUtil.isNotEmpty(user.getEmail()) && FormatUtil.isEmail(user.getEmail())) {
+            if (TextUtil.isNotEmpty(user.getEmail())) {
+                if (!FormatUtil.isEmail(user.getEmail())) {
+                    throw new BusinessException("邮箱格式不正确");
+                }
+                User userByEmail = findUserByEmail(user.getEmail());
+                if (userByEmail != null && !Objects.equals(userByEmail.getId(), saveUser.getId())) {
+                    throw new BusinessException("邮箱已经被注册");
+                }
                 saveUser.setEmail(user.getEmail());
             }
             if (TextUtil.isNotEmpty(user.getPassword())) {

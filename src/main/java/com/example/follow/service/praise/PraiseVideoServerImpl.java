@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,6 +31,8 @@ public class PraiseVideoServerImpl implements PraiseVideoServer {
 
     @Autowired
     private PraiseAccountServer accountServer;
+    @Autowired
+    private PraiseServer praiseServer;
 
     @Override
     public boolean deletePraise(long id) {
@@ -75,25 +78,30 @@ public class PraiseVideoServerImpl implements PraiseVideoServer {
      * @param followType
      * @return
      */
+    @Transactional
     @Override
     public List<PraiseVideoModel> findPraiseList(int followType) {
         List<PraiseVideoModel> videoList = repository.findByUserIdAndFollowType(securityUser.getUserId(), followType);
         // 查找数量
+        for (PraiseVideoModel praiseVideoModel : videoList) {
+            praiseVideoModel.setCount(praiseServer.videoPraiseCount(praiseVideoModel.getId()));
+        }
         return videoList;
     }
 
     /**
      * 查找可点赞的列表
      *
-     * @param followType
+     * @param praiseType
      * @return
      */
     @Override
-    public List<PraiseVideoModel> findEnablePraiseList(int followType) {
-        List<Long> enablePraiseList = accountServer.findEnablePraiseList(followType);
+    public List<PraiseVideoModel> findEnablePraiseList(int praiseType) {
+        List<Long> enablePraiseList = accountServer.findEnablePraiseList(praiseType);
+        List<Long> userPraiseList = praiseServer.getUserPraiseAccount(praiseType);
         Specification<PraiseVideoModel> specification = (Root<PraiseVideoModel> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             // 当前类型
-            Predicate followTypePredicate = criteriaBuilder.equal(root.get("followType"), followType);
+            Predicate followTypePredicate = criteriaBuilder.equal(root.get("followType"), praiseType);
             // 不包括自己
             Predicate userPredicate = criteriaBuilder.notEqual(root.get("userId"), securityUser.getUserId());
             // 在enablePraiseList里面
@@ -102,8 +110,11 @@ public class PraiseVideoServerImpl implements PraiseVideoServer {
                 userIdInPredicate = criteriaBuilder.and(root.get("userId").in(enablePraiseList));
             }
             // 不在点赞列表
-//            Predicate accountNotInPredicate = criteriaBuilder.conjunction();
-            Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, userIdInPredicate);
+            Predicate accountNotInPredicate = criteriaBuilder.conjunction();
+            if (!userPraiseList.isEmpty()) {
+                accountNotInPredicate = criteriaBuilder.not(root.get("userId").in(userPraiseList));
+            }
+            Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, userIdInPredicate, accountNotInPredicate);
             // 排序 按创建时间从大道小
             query.orderBy(criteriaBuilder.desc(root.get("createTime")));
             return predicate;

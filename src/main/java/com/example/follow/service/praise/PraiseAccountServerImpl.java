@@ -33,6 +33,9 @@ public class PraiseAccountServerImpl implements PraiseAccountServer {
     @Autowired
     private UserService userService;
 
+
+
+
     /**
      * 获取点赞账户信息
      *
