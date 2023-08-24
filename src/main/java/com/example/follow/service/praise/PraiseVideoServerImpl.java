@@ -58,7 +58,7 @@ public class PraiseVideoServerImpl implements PraiseVideoServer {
         if (TextUtil.isEmpty(praiseVideoModel.getUrl())) {
             throw new BusinessException("连接不能为空");
         }
-        if (praiseVideoModel.getId() == null) {
+        if (praiseVideoModel.getId() > 0) {
             praiseVideoModel.setId(0L);
         }
         PraiseVideoModel saveModel = repository.findByIdAndUserId(praiseVideoModel.getId(), securityUser.getUserId());
@@ -86,6 +86,7 @@ public class PraiseVideoServerImpl implements PraiseVideoServer {
         for (PraiseVideoModel praiseVideoModel : videoList) {
             praiseVideoModel.setCount(praiseServer.videoPraiseCount(praiseVideoModel.getId()));
         }
+        videoList.sort((t1, t2) -> (int) (t2.getId() - t1.getId()));
         return videoList;
     }
 
