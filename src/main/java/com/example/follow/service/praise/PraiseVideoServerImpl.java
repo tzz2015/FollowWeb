@@ -58,9 +58,6 @@ public class PraiseVideoServerImpl implements PraiseVideoServer {
         if (TextUtil.isEmpty(praiseVideoModel.getUrl())) {
             throw new BusinessException("连接不能为空");
         }
-        if (praiseVideoModel.getId() > 0) {
-            praiseVideoModel.setId(0L);
-        }
         PraiseVideoModel saveModel = repository.findByIdAndUserId(praiseVideoModel.getId(), securityUser.getUserId());
         if (saveModel != null) {
             saveModel.setTitle(praiseVideoModel.getTitle());
