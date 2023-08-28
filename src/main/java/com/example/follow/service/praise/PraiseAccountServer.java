@@ -55,7 +55,7 @@ public interface PraiseAccountServer {
     boolean isCanPraised(long userId, int followType);
 
     /**
-     * 查找可关注的列表
+     * 查找可点赞的列表
      *
      * @param followType
      * @return

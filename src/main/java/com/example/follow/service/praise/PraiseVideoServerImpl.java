@@ -96,7 +96,7 @@ public class PraiseVideoServerImpl implements PraiseVideoServer {
     @Override
     public List<PraiseVideoModel> findEnablePraiseList(int praiseType) {
         List<Long> enablePraiseList = accountServer.findEnablePraiseList(praiseType);
-        List<Long> userPraiseList = praiseServer.getUserPraiseAccount(praiseType);
+        List<Long> praiseVideoList = praiseServer.getUserPraiseAccount(praiseType);
         Specification<PraiseVideoModel> specification = (Root<PraiseVideoModel> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             // 当前类型
             Predicate followTypePredicate = criteriaBuilder.equal(root.get("followType"), praiseType);
@@ -109,8 +109,8 @@ public class PraiseVideoServerImpl implements PraiseVideoServer {
             }
             // 不在点赞列表
             Predicate accountNotInPredicate = criteriaBuilder.conjunction();
-            if (!userPraiseList.isEmpty()) {
-                accountNotInPredicate = criteriaBuilder.not(root.get("userId").in(userPraiseList));
+            if (!praiseVideoList.isEmpty()) {
+                accountNotInPredicate = criteriaBuilder.not(root.get("id").in(praiseVideoList));
             }
             Predicate predicate = criteriaBuilder.and(followTypePredicate, userPredicate, userIdInPredicate, accountNotInPredicate);
             // 排序 按创建时间从大道小

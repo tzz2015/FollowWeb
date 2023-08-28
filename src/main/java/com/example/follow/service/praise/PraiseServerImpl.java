@@ -112,7 +112,7 @@ public class PraiseServerImpl implements PraiseServer {
     }
 
     /**
-     * 获取当前点赞过的列表
+     * 获取当前点赞过的列表id
      *
      * @param praiseType
      * @return
@@ -122,7 +122,7 @@ public class PraiseServerImpl implements PraiseServer {
         List<Long> userList = new ArrayList<>();
         List<PraiseModel> followList = repository.findByUserIdAndPraiseType(securityUser.getUserId(), praiseType);
         for (PraiseModel follow : followList) {
-            userList.add(follow.getPraisedUserId());
+            userList.add(follow.getVideoId());
         }
         return userList;
     }

@@ -53,16 +53,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
         }
 
-        if (!StringUtils.hasText(token) || !token.startsWith(Constants.TOKEN_PREFIX)) {
 //            filterChain.doFilter(request, response);
-            for (String reg : NoneAuthedResources.BACKEND_RESOURCES) {
-                if (pathmatcher.match(reg, request.getServletPath())) {
-                    filterChain.doFilter(request, response);
-                    return;
-                }
+        for (String reg : NoneAuthedResources.BACKEND_RESOURCES) {
+            if (pathmatcher.match(reg, request.getServletPath())) {
+                filterChain.doFilter(request, response);
+                return;
             }
+        }
+
+        if (!StringUtils.hasText(token) || !token.startsWith(Constants.TOKEN_PREFIX)) {
+            error(response);
             return;
         }
+
 
         token = token.substring(7);
 
