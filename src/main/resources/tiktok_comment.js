@@ -1,30 +1,40 @@
-app.launchApp("抖音");
+app.launchApp("TikTok");
 auto("fast");
 threads.start(function () {
     console.show();
     console.setTitle("中文", "#ff11ee00", 30);
     console.setCanInput(false);
 });
-toRequestPermiss()
+toRequstPermiss()
 
 
-function toRequestPermiss() {
+function toRequstPermiss() {
     //申请权限并自动点击
     threads.start(function () {
-        sleep(1000)
-        var beginBtn = classNameContains("Button").textContains("立即开始").findOne(1000);
-        if (beginBtn) {
-            console.log("找到立即开始按钮");
-            clickView(beginBtn)
-        } else {
-            console.log("没有找到立即开始按钮");
+        try {
+            sleep(1000)
+            var buttonList = classNameContains("Button").find();
+            console.log("buttonList:" + buttonList.size());
+            // var beginBtn = classNameContains("Button").textMatches(/(允许|立即开始|统一|START NOW)/).findOne(1000);
+            var beginBtn = buttonList.get(1)
+            if (beginBtn) {
+                console.log("find beginBtn");
+                clickView(beginBtn)
+            } else {
+                console.log("not find beginBtn");
+                exit()
+            }
+        } catch (e) {
+            console.log("requestScreenCapture fail:" + e);
+            exit()
         }
+
     });
     if (!requestScreenCapture()) {
-        console.log("请求截图失败");
-        exit();
+        console.log("requestScreenCapture fail");
+        // exit();
     } else {
-        console.log("请求截图成功");
+        console.log("requestScreenCapture success");
     }
 }
 
@@ -82,20 +92,14 @@ function findLikeView(color) {
         sleep(500);
         // var color = images.pixel(img, x, y);
         // console.log("点前xy颜色" + colors.toString(color))
-        // 未点赞颜色#EBEBEB  点赞颜色#FB4872
-        if (findColor(img, color, {
-            region: [width - 100, height -500, 100, 200],
-            threshold: 4
-        })) {
-            console.log("找到相应颜色")
-            return true
+        var point = findColorInRegion(img, color, width - 200, height / 3, 200, 300)
+        if (point) {
+            console.log("color:" + color + "--x:" + point.x + "--y:" + point.y)
         }
-        console.log("没有找到相应颜色")
+        return point
     } catch (e) {
-        console.log("截图异常：" + e)
-        // exit();
+        console.log("captureScreen error：" + e)
     }
-    return false
 }
 
 

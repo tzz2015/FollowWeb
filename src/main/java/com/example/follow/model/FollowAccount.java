@@ -25,7 +25,6 @@ public class FollowAccount {
 
     private Long userId;
 
-    @Column(unique = true)
     private String account;
 
     private int followType;
