@@ -2,7 +2,7 @@ app.launchApp("TikTok");
 auto("fast");
 threads.start(function () {
     console.show();
-    console.setTitle("中文", "#ff11ee00", 30);
+    console.setTitle("Log", "#ff11ee00", 30);
     console.setCanInput(false);
 });
 toRequstPermiss()
@@ -38,6 +38,7 @@ function toRequstPermiss() {
     }
 }
 
+
 function myrandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -57,12 +58,8 @@ function generateRandomString(length) {
 
 var width = device.width
 var height = device.height
-var fruits = ["现在出了个互粉互赞工具：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "需要互粉工具找我。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "用工具互粉找我https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "推荐一个互粉互赞工具。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "关注互粉助手，提高效率。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "需要涨粉找我啊。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "使用互粉互赞工具，涨一千不是梦，涨一万不上线：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "互粉互助：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "快来下载互粉助手吧。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "快来下载互粉互赞工具：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "别再为一千分跑断腿了来下载互粉互赞工具：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "一关就是一辈子，主打真诚https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "你还不知道有互粉互赞工具吧：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "人很话不多，快来使用互粉助手：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "永不取关，快来快来https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "分享个好工具给你：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "互关必回https://s1.link-nemo.com/bot/lyf/inrt-release.apk。"];
+var fruits = ["给你推荐一个互粉互赞工具，快速涨粉。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
+    "Recommend a tool for mutual fans and likes to increase your fans quickly。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。"];
 
 // 将一段文本插入另一段文本中间
 function insertText(originalText, insertText, position) {
@@ -71,17 +68,21 @@ function insertText(originalText, insertText, position) {
 
 var maxDo = 100
 while (maxDo > 0) {
-    if (findLikeView("#E7E9E6")) {
-        maxDo -= 1
-        var index = myrandom(0, fruits.length - 1)
-        var inputText = generateRandomString(5) + fruits[index] + generateRandomString(5)
-        var inputText2 = insertText(inputText, generateRandomString(3), 10)
-        doInput(inputText2)
-    } else {
-        console.log("直播")
-        swipe(width / 2, height / 2, width / 2, 200, 500)
-        sleep(200);
-    }
+    // var point = findLikeView("#EAE6E5")
+    // if (point) {
+    console.log("maxDo:" + maxDo)
+    click(1000, 1600)
+    // console.log("point.x:" + point.x + "-- point.y:" + point.y)
+    maxDo -= 1
+    var index = myrandom(0, fruits.length - 1)
+    var inputText = generateRandomString(5) + fruits[index] + generateRandomString(5)
+    // var inputText2 = insertText(inputText, generateRandomString(3), 10)
+    doInput(inputText)
+    /* } else {
+         console.log("live")
+         swipe(width / 2, height / 2, width / 2, 200, 500)
+         sleep(200);
+     }*/
 
 }
 
@@ -92,49 +93,47 @@ function findLikeView(color) {
         sleep(500);
         // var color = images.pixel(img, x, y);
         // console.log("点前xy颜色" + colors.toString(color))
-        var point = findColorInRegion(img, color, width - 200, height / 3, 200, 300)
+        var point = findColor(img, color, {
+            region: [width - relativeSize(100), height / 3 / 2 - relativeSize(50), relativeSize(100), relativeSize(200)],
+            threshold: 4
+        })
         if (point) {
-            console.log("color:" + color + "--x:" + point.x + "--y:" + point.y)
+            console.log("color find:" + color)
+            return point
+        } else {
+            console.log("color not find:" + color)
         }
-        return point
     } catch (e) {
-        console.log("captureScreen error：" + e)
+        console.log("find view error：" + e)
     }
+    return null
 }
 
 
 function doInput(inptuText) {
     sleep(1000)
     console.log("width:" + width + "--height:" + height)
-    var cmw = width - 100
-    var cmh = height - 850
-    // 评论
-    click(cmw, cmh)
-    console.log("cmw:" + cmw + "--height:" + cmh)
-    sleep(800)
-    click(width / 2, height - 50)
-    console.log("点击输入框")
-    sleep(800)
+    // click(width / 2, height - 50)
+    // console.log("click EditText")
+    // sleep(800)
     var editText = className("EditText").findOne(1000);
-    console.log("查找输入框：" + (editText != null))
+    console.log("find editText：" + (editText != null))
     if (editText != null) {
-        sleep(500)
-        editText.setText(inptuText)
-        console.log("设置文本")
         sleep(200)
-        var searchBtn = text("发送").findOne(1000);
-        if (searchBtn != null) {
-            sleep(200)
-            clickView(searchBtn)
-            click(width - 200, 500)
-            sleep(200)
-            click(width - 200, 500)
-            sleep(200)
-            swipe(width / 2, height / 2, width / 2, 200, 500)
-            sleep(500)
-        } else {
-            console.log("没有找到发送按钮")
-        }
+        editText.setText(inptuText)
+        console.log("set text")
+        sleep(200)
+        click(width - relativeSize(100), height - relativeSize(100))
+        sleep(200)
+        click(width - relativeSize(100), relativeSize(200))
+        sleep(300)
+        swipe(width / 2, height / 2, width / 2, 200, 500)
+        sleep(500)
+    } else {
+        back()
+        sleep(300)
+        swipe(width / 2, height / 2, width / 2, 200, 500)
+        sleep(500)
     }
 }
 
@@ -149,3 +148,13 @@ function clickView(view) {
     var centerY = bounds.top + (bounds.bottom - bounds.top) / 2;
     click(centerX, centerY);
 }
+
+function relativeSize(size) {
+    return width * size / 1080.0
+}
+
+// sleep(1000);
+// console.clear();
+// console.hide();
+// app.launchPackage("org.autojs.autoxjs.follow");
+exit();

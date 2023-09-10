@@ -61,12 +61,15 @@ function insertText(originalText, insertText, position) {
 
 var maxDo = 100
 while (maxDo > 0) {
-    if (findLikeView("#E7E9E6")) {
+    var point = findLikeView("#EAEFF3")
+    if (point) {
+        click(point.x, point.y)
+        console.log("point.x:" + point.x + "-- point.y:" + point.y)
         maxDo -= 1
         var index = myrandom(0, fruits.length - 1)
         var inputText = generateRandomString(5) + fruits[index] + generateRandomString(5)
-        var inputText2 = insertText(inputText, generateRandomString(3), 10)
-        doInput(inputText2)
+        // var inputText2 = insertText(inputText, generateRandomString(3), 10)
+        doInput(inputText)
     } else {
         console.log("直播")
         swipe(width / 2, height / 2, width / 2, 200, 500)
@@ -83,12 +86,13 @@ function findLikeView(color) {
         // var color = images.pixel(img, x, y);
         // console.log("点前xy颜色" + colors.toString(color))
         // 未点赞颜色#EBEBEB  点赞颜色#FB4872
-        if (findColor(img, color, {
-            region: [width - 100, height -500, 100, 200],
+        var point = findColor(img, color, {
+            region: [width - 100, height / 2, 100, 200],
             threshold: 4
-        })) {
+        })
+        if (point) {
             console.log("找到相应颜色")
-            return true
+            return point
         }
         console.log("没有找到相应颜色")
     } catch (e) {
@@ -102,12 +106,6 @@ function findLikeView(color) {
 function doInput(inptuText) {
     sleep(1000)
     console.log("width:" + width + "--height:" + height)
-    var cmw = width - 100
-    var cmh = height - 850
-    // 评论
-    click(cmw, cmh)
-    console.log("cmw:" + cmw + "--height:" + cmh)
-    sleep(800)
     click(width / 2, height - 50)
     console.log("点击输入框")
     sleep(800)
@@ -122,15 +120,21 @@ function doInput(inptuText) {
         if (searchBtn != null) {
             sleep(200)
             clickView(searchBtn)
-            click(width - 200, 500)
-            sleep(200)
-            click(width - 200, 500)
-            sleep(200)
-            swipe(width / 2, height / 2, width / 2, 200, 500)
-            sleep(500)
         } else {
             console.log("没有找到发送按钮")
         }
+        sleep(200)
+        click(width - 200, 500)
+        sleep(200)
+        click(width - 200, 500)
+        sleep(200)
+        swipe(width / 2, height / 2, width / 2, 200, 500)
+        sleep(500)
+    } else {
+        back()
+        sleep(200)
+        swipe(width / 2, height / 2, width / 2, 200, 500)
+        sleep(500)
     }
 }
 
@@ -145,3 +149,9 @@ function clickView(view) {
     var centerY = bounds.top + (bounds.bottom - bounds.top) / 2;
     click(centerX, centerY);
 }
+
+sleep(1000);
+console.clear();
+console.hide();
+app.launchPackage("org.autojs.autoxjs.follow");
+exit();
