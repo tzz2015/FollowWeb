@@ -61,7 +61,7 @@ function insertText(originalText, insertText, position) {
 
 var maxDo = 100
 while (maxDo > 0) {
-    var point = findLikeView("#EAEFF3")
+    var point = findLikeView("#FBFAF5")
     if (point) {
         click(point.x, point.y)
         console.log("point.x:" + point.x + "-- point.y:" + point.y)
@@ -87,8 +87,8 @@ function findLikeView(color) {
         // console.log("点前xy颜色" + colors.toString(color))
         // 未点赞颜色#EBEBEB  点赞颜色#FB4872
         var point = findColor(img, color, {
-            region: [width - 100, height / 2 + 100, 100, 200],
-            threshold: 4
+            region: [width - 100, height / 2 + 200, 100, 200],
+            threshold: 1
         })
         if (point) {
             console.log("找到相应颜色")
@@ -128,12 +128,12 @@ function doInput(inptuText) {
         sleep(200)
         click(width - 200, 500)
         sleep(200)
-        swipe(width / 2, height / 2, width / 2, 200, 500)
+        swipe(width / 2, height / 2, width / 2, 200, 300)
         sleep(500)
     } else {
         back()
         sleep(200)
-        swipe(width / 2, height / 2, width / 2, 200, 500)
+        swipe(width / 2, height / 2, width / 2, 200, 300)
         sleep(500)
     }
 }
