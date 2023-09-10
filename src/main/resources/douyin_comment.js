@@ -47,12 +47,12 @@ function generateRandomString(length) {
 
 var width = device.width
 var height = device.height
-var fruits = ["现在出了个互粉互赞工具：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "需要互粉工具找我。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "用工具互粉找我https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "推荐一个互粉互赞工具。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "关注互粉助手，提高效率。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "需要涨粉找我啊。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "使用互粉互赞工具，涨一千不是梦，涨一万不上线：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "互粉互助：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "快来下载互粉助手吧。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "快来下载互粉互赞工具：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "别再为一千分跑断腿了来下载互粉互赞工具：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "一关就是一辈子，主打真诚https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "你还不知道有互粉互赞工具吧：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "人很话不多，快来使用互粉助手：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "永不取关，快来快来https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "分享个好工具给你：https://s1.link-nemo.com/bot/lyf/inrt-release.apk。", "互关必回https://s1.link-nemo.com/bot/lyf/inrt-release.apk。"];
+var fruits = ["互粉互赞：https://share.weiyun.com/6c9BL3BY", "需要互粉工具找我。https://share.weiyun.com/6c9BL3BY", "用工具互粉找我https://share.weiyun.com/6c9BL3BY",
+    "推荐一个互粉互赞工具。https://share.weiyun.com/6c9BL3BY", "关注互粉助手，提高效率。https://share.weiyun.com/6c9BL3BY", "需要涨粉找我啊。https://share.weiyun.com/6c9BL3BY",
+    "使用互粉互赞工具，涨一千不是梦，涨一万不上线：https://share.weiyun.com/6c9BL3BY", "互粉互助：https://share.weiyun.com/6c9BL3BY", "快来下载互粉助手吧。https://share.weiyun.com/6c9BL3BY",
+    "快来下载互粉互赞工具：https://share.weiyun.com/6c9BL3BY", "别再为一千分跑断腿了来下载互粉互赞工具：https://share.weiyun.com/6c9BL3BY", "一关就是一辈子，主打真诚https://share.weiyun.com/6c9BL3BY",
+    "你还不知道有互粉互赞工具吧：https://share.weiyun.com/6c9BL3BY", "人很话不多，快来使用互粉助手：https://share.weiyun.com/6c9BL3BY", "永不取关，快来快来https://share.weiyun.com/6c9BL3BY",
+    "分享个好工具给你：https://share.weiyun.com/6c9BL3BY", "互关必回 https://share.weiyun.com/6c9BL3BY"];
 
 // 将一段文本插入另一段文本中间
 function insertText(originalText, insertText, position) {
@@ -67,9 +67,9 @@ while (maxDo > 0) {
         console.log("point.x:" + point.x + "-- point.y:" + point.y)
         maxDo -= 1
         var index = myrandom(0, fruits.length - 1)
-        var inputText = generateRandomString(5) + fruits[index] + generateRandomString(5)
-        // var inputText2 = insertText(inputText, generateRandomString(3), 10)
-        doInput(inputText)
+        var inputText = generateRandomString(5) + fruits[index]
+        var inputText2 = insertText(inputText, generateRandomString(3), 10)
+        doInput(inputText2)
     } else {
         console.log("直播")
         swipe(width / 2, height / 2, width / 2, 200, 500)
@@ -87,7 +87,7 @@ function findLikeView(color) {
         // console.log("点前xy颜色" + colors.toString(color))
         // 未点赞颜色#EBEBEB  点赞颜色#FB4872
         var point = findColor(img, color, {
-            region: [width - 100, height / 2, 100, 200],
+            region: [width - 100, height / 2 + 100, 100, 200],
             threshold: 4
         })
         if (point) {

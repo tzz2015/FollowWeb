@@ -58,8 +58,12 @@ function generateRandomString(length) {
 
 var width = device.width
 var height = device.height
-var fruits = ["给你推荐一个互粉互赞工具，快速涨粉。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
-    "Recommend a tool for mutual fans and likes to increase your fans quickly。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。"];
+var fruits = ["互粉互赞来咯。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
+    "Recommend a tool for mutual fans and likes to increase your fans quickly。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
+    "互粉互赞，来咯，一起用互粉互赞工具。https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
+    "Come and use the mutual fans and likes tool together. https://s1.link-nemo.com/bot/lyf/inrt-release.apk。",
+    "发现了一个互粉好帮手，一起来互粉吧。https://s1.link-nemo.com/bot/lyf/inrt-release.apk ",
+    "I found a good helper for mutual fans, let’s start mutual fans together. https://s1.link-nemo.com/bot/lyf/inrt-release.apk"];
 
 // 将一段文本插入另一段文本中间
 function insertText(originalText, insertText, position) {
@@ -71,7 +75,7 @@ while (maxDo > 0) {
     // var point = findLikeView("#EAE6E5")
     // if (point) {
     console.log("maxDo:" + maxDo)
-    click(1000, 1600)
+    click(1000, 1550)
     // console.log("point.x:" + point.x + "-- point.y:" + point.y)
     maxDo -= 1
     var index = myrandom(0, fruits.length - 1)
@@ -153,8 +157,8 @@ function relativeSize(size) {
     return width * size / 1080.0
 }
 
-// sleep(1000);
-// console.clear();
-// console.hide();
-// app.launchPackage("org.autojs.autoxjs.follow");
+sleep(1000);
+console.clear();
+console.hide();
+app.launchPackage("org.autojs.autoxjs.follow");
 exit();
