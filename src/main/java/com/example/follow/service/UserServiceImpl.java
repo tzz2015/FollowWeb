@@ -84,9 +84,7 @@ public class UserServiceImpl implements UserService {
         if (TextUtil.isEmpty(user.getPhone()) || TextUtil.isEmpty(user.getPassword())) {
             throw new BusinessException("用户名或者密码为空");
         }
-        if (!FormatUtil.isMobile(user.getPhone())) {
-            throw new BusinessException("手机号码格式不正确");
-        }
+
         if (!FormatUtil.isPassword(user.getPassword())) {
             throw new BusinessException("请输入6-20位由字母和数字组成的密码");
         }
@@ -121,12 +119,9 @@ public class UserServiceImpl implements UserService {
 //        User loginUser = securityUser.getLoginUser();
         if (saveUser != null) {
             if (TextUtil.isNotEmpty(user.getPhone())) {
-                if (!FormatUtil.isMobile(user.getPhone())) {
-                    throw new BusinessException("手机号码格式不正确");
-                }
                 User userByPhone = findUserByPhone(user.getPhone());
                 if (userByPhone != null && !Objects.equals(userByPhone.getId(), saveUser.getId())) {
-                    throw new BusinessException("手机号已经被注册");
+                    throw new BusinessException("用户名已经被注册");
                 }
                 saveUser.setPhone(user.getPhone());
             }

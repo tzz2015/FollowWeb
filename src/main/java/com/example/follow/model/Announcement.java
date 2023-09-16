@@ -24,6 +24,8 @@ public class Announcement {
     private String title;
     @Column(nullable = false, unique = true)
     private String content;
+
+    private String enContent;
     /**
      * 权重
      */
