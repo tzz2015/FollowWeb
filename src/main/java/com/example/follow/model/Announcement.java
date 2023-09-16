@@ -22,6 +22,7 @@ public class Announcement {
     private Long id;
     @Column(nullable = false, unique = true)
     private String title;
+    private String enTitle;
     @Column(nullable = false, unique = true)
     private String content;
 
