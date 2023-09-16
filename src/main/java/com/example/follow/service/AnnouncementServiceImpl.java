@@ -29,6 +29,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             save = first;
             save.setContent(announcement.getContent());
             save.setTitle(announcement.getTitle());
+            save.setEnContent(announcement.getEnContent());
+            save.setEnTitle(announcement.getEnTitle());
             save.setWeight(announcement.getWeight());
         } else {
             save = announcement;
